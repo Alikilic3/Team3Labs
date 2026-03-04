@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registreren - GameHub</title>
+    
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="index.html" class="logo">team3Labs</a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Projecten</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content-wrapper">
+        <div class="auth-container">
+            <h1 class="page-title">Account aanmaken</h1>
+            <p class="page-subtitle">Start met het bouwen van je collectie</p>
+            
+            <form class="auth-form" action="login.html">
+                <div class="form-group">
+                    <label for="username">Gebruikersnaam</label>
+                    <input type="text" id="username" required placeholder="Kies een naam">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mailadres</label>
+                    <input type="email" id="email" required placeholder="jouw@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Wachtwoord</label>
+                    <input type="password" id="password" required placeholder="Kies een sterk wachtwoord">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">Registreer</button>
+            </form>
+
+            <p class="auth-link">Heb je al een account? <a href="login.html">Log hier in</a>.</p>
+        </div>
+    </main>
+
+</body>
+</html>

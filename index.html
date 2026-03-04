@@ -1,11 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team3Labs - Projecten</title>
+
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <header class="main-header">
+      <a href="index.html" class="logo">Team3Labs</a>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html" class="active">Projecten</a></li>
+          <li><a href="#">Over ons</a></li>
+        </ul>
+      </nav>
+
+      <div class="auth-buttons">
+        <a href="login.html" class="btn btn-outline">Login</a>
+        <a href="register.html" class="btn btn-primary">Registreren</a>
+      </div>
+    </header>
+
+    <main class="content-wrapper">
+      <h1 class="page-title">Kies een project</h1>
+      <p class="page-subtitle">
+        Selecteer hieronder het project dat je wilt bekijken.
+      </p>
+
+      <div class="projects-container">
+        <section class="project-card">
+          <img src="assets/images/placeholder.jpg" alt="GameHub Project" />
+          <div class="project-content">
+            <h2>GameHub</h2>
+            <p>Ontdek, beheer en vergelijk videogames via de RAWG database.</p>
+            <a href="search.html" class="btn btn-primary btn-full"
+              >Kies GameHub</a
+            >
+          </div>
+        </section>
+
+        <section class="project-card">
+          <img src="assets/images/placeholder.jpg" alt="Ander Project" />
+          <div class="project-content">
+            <h2>Project 2 (Gesloten)</h2>
+            <p>
+              Dit is een ander groepsproject. Je hebt hier momenteel geen
+              toegang toe.
+            </p>
+            <button class="btn btn-disabled btn-full" disabled>
+              Geen toegang
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
 </html>

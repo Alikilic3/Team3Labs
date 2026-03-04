@@ -1,0 +1,341 @@
+/* Knoppen (Buttons) */
+.btn {
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  text-align: center;
+  display: inline-block;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #000;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-color);
+  color: #000;
+}
+
+.btn-disabled {
+  background-color: var(--disabled-color);
+  color: var(--disabled-text);
+  cursor: not-allowed;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Project Kaarten (Cards) */
+.project-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  transition: transform 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-color);
+}
+
+.project-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background-color: #2a2a2a; /* Zichtbaar als placeholder.jpg niet bestaat */
+}
+
+.project-content {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: 1;
+}
+
+.project-content p {
+  color: var(--text-muted);
+  line-height: 1.5;
+  flex: 1;
+}
+/* --- Formulieren (Login & Register) --- */
+.auth-container {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: var(--bg-card);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.form-group input {
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+/* Als je in een tekstvak klikt, krijgt het een paarse rand */
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.auth-link {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: var(--spacing-lg);
+}
+
+.auth-link a {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+/* --- App Header & Huidige Game --- */
+.app-header {
+  justify-content: space-between;
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.current-game-badge {
+  background-color: #2a2a2a;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  border: 1px solid var(--primary-color);
+}
+
+.badge-label {
+  color: var(--text-muted);
+}
+.badge-title {
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-left: 4px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.user-avatar {
+  background-color: var(--primary-color);
+  color: #000;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.btn-small {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+/* --- State Buttons (Toevoegen/Verwijderen) --- */
+.btn-success {
+  background-color: var(--success-color);
+  color: #000;
+}
+.btn-success:hover {
+  background-color: #02b3a3;
+}
+
+.btn-danger {
+  background-color: transparent;
+  border: 1px solid var(--danger-color);
+  color: var(--danger-color);
+}
+.btn-danger:hover {
+  background-color: var(--danger-color);
+  color: #fff;
+}
+
+/* --- Zoekbalk Component --- */
+.search-section {
+  margin-bottom: 3rem;
+}
+
+.search-box-container {
+  display: flex;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  gap: var(--spacing-sm);
+}
+
+.search-input {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  font-size: 1.1rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.search-btn {
+  padding: 0 24px;
+}
+
+/* Autocomplete (klaar voor later) */
+.autocomplete-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 120px; /* Ruimte laten voor de zoekknop */
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  z-index: 10;
+}
+
+.autocomplete-results li {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  text-align: left;
+}
+.autocomplete-results li:hover {
+  background-color: var(--bg-main);
+}
+
+/* --- GameCards Component (voor in de Grid) --- */
+.results-section h2 {
+  text-align: left;
+  margin-bottom: var(--spacing-md);
+  font-size: 1.5rem;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.game-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--text-muted);
+}
+
+.game-cover {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background-color: #2a2a2a;
+}
+
+.game-info {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.game-title {
+  font-size: 1.2rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.game-rating {
+  font-size: 0.9rem;
+  color: #ffca28; /* Goudkleur voor ster */
+  font-weight: bold;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.game-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-lg);
+  flex: 1;
+}
+
+.add-remove-btn {
+  margin-top: auto;
+}

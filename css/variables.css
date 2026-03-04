@@ -1,0 +1,19 @@
+:root {
+    /* Kleuren */
+    --bg-main: #121212;
+    --bg-card: #1e1e1e;
+    --text-main: #ffffff;
+    --text-muted: #a0a0a0;
+    --primary-color: #bb86fc;
+    --primary-hover: #9965f4;
+    --border-color: #333333;
+    --disabled-color: #555555;
+    --disabled-text: #888888;
+
+    /* Typografie & Spacing */
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --radius: 8px;
+}
