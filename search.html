@@ -1,111 +1,230 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zoeken - GameHub</title>
-    
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/main.css">
-</head>
-<body>
 
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
     <header class="main-header app-header">
-        <div class="header-left">
-            <a href="search.html" class="logo">GameHub</a>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="search.html" class="active">Zoeken</a></li>
-                    <li><a href="collection.html">Mijn Collectie</a></li>
-                    <li><a href="compare.html">Vergelijken</a></li>
-                    <li><a href="guess.html">Guess</a></li>
-                </ul>
-            </nav>
+      <div class="header-left">
+        <a href="search.html" class="logo">GameHub</a>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="search.html" class="active">Zoeken</a></li>
+            <li><a href="collection.html">Mijn Collectie</a></li>
+            <li><a href="compare.html">Vergelijken</a></li>
+            <li><a href="guess.html">Guess</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="current-game-badge">
+          <span class="badge-label">Huidige Game:</span>
+          <span class="badge-title">Nog geen gekozen</span>
         </div>
 
-        <div class="header-right">
-            <div class="current-game-badge">
-                <span class="badge-label">Huidige Game:</span>
-                <span class="badge-title">Nog geen gekozen</span>
-            </div>
-            
-            <div class="user-menu">
-                <span class="user-avatar">U1</span>
-                <a href="index.html" class="btn btn-outline btn-small">Uitloggen</a>
-            </div>
+        <div class="user-menu">
+          <span class="user-avatar">U1</span>
+          <a href="index.html" class="btn btn-outline btn-small">Uitloggen</a>
         </div>
+      </div>
     </header>
 
     <main class="content-wrapper app-content">
-        
-        <section class="search-section">
-            <h1 class="page-title">Ontdek nieuwe games</h1>
-            
-            <div class="search-box-container">
-                <input type="text" class="search-input" placeholder="Zoek een game via de RAWG database..." autocomplete="off">
-                <button class="btn btn-primary search-btn">Zoeken</button>
-                
-                <ul class="autocomplete-results" style="display: none;">
-                    <li>The Witcher 3: Wild Hunt</li>
-                    <li>The Legend of Zelda: Breath of the Wild</li>
-                </ul>
+      <section class="search-section">
+        <h1 class="page-title">Ontdek nieuwe games</h1>
+
+        <div class="search-box-container">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Zoek een game via de RAWG database..."
+            autocomplete="off"
+          />
+          <button class="btn btn-primary search-btn">Zoeken</button>
+
+          <ul class="autocomplete-results" style="display: none">
+            <li>The Witcher 3: Wild Hunt</li>
+            <li>The Legend of Zelda: Breath of the Wild</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="results-section">
+        <h2>Populaire resultaten</h2>
+
+        <div class="games-grid">
+          <article class="game-card">
+            <img
+              src="assets/images/cyberpunk.png"
+              alt="Cover game 1"
+              class="game-cover"
+            />
+            <div class="game-info">
+              <div class="game-header">
+                <h3 class="game-title">Cyberpunk 2077</h3>
+                <span class="game-rating">⭐ 4.1</span>
+              </div>
+              <p class="game-meta">Released: 10 dec 2020</p>
+              <button class="btn btn-danger btn-full add-remove-btn">
+                + Toevoegen aan collectie
+              </button>
             </div>
-        </section>
+          </article>
 
-        <section class="results-section">
-            <h2>Populaire resultaten</h2>
-            
-            <div class="games-grid">
-                
-                <article class="game-card">
-                    <img src="assets/images/placeholder.jpg" alt="Cover game 1" class="game-cover">
-                    <div class="game-info">
-                        <div class="game-header">
-                            <h3 class="game-title">Cyberpunk 2077</h3>
-                            <span class="game-rating">⭐ 4.1</span>
-                        </div>
-                        <p class="game-meta">Released: 10 dec 2020</p>
-                        <button class="btn btn-danger btn-full add-remove-btn">
-                            + Toevoegen aan collectie
-                        </button>
-                    </div>
-                </article>
-
-                <article class="game-card">
-                    <img src="assets/images/placeholder.jpg" alt="Cover game 2" class="game-cover">
-                    <div class="game-info">
-                        <div class="game-header">
-                            <h3 class="game-title">Elden Ring</h3>
-                            <span class="game-rating">⭐ 4.8</span>
-                        </div>
-                        <p class="game-meta">Released: 25 feb 2022</p>
-                        <button class="btn btn-success btn-full add-remove-btn">
-                            ✓ In collectie
-                        </button>
-                    </div>
-                </article>
-
-                <article class="game-card">
-                    <img src="assets/images/placeholder.jpg" alt="Cover game 3" class="game-cover">
-                    <div class="game-info">
-                        <div class="game-header">
-                            <h3 class="game-title">Hollow Knight</h3>
-                            <span class="game-rating">⭐ 4.6</span>
-                        </div>
-                        <p class="game-meta">Released: 24 feb 2017</p>
-                        <button class="btn btn-danger btn-full add-remove-btn">
-                            + Toevoegen aan collectie
-                        </button>
-                    </div>
-                </article>
-
+          <article class="game-card">
+            <img
+              src="assets/images/elden_ring.png"
+              alt="Cover game 2"
+              class="game-cover"
+            />
+            <div class="game-info">
+              <div class="game-header">
+                <h3 class="game-title">Elden Ring</h3>
+                <span class="game-rating">⭐ 4.8</span>
+              </div>
+              <p class="game-meta">Released: 25 feb 2022</p>
+              <button class="btn btn-success btn-full add-remove-btn">
+                ✓ In collectie
+              </button>
             </div>
-        </section>
-        
+          </article>
+
+          <article class="game-card">
+            <img
+              src="assets/images/hollow_knight.png"
+              alt="Cover game 3"
+              class="game-cover"
+            />
+            <div class="game-info">
+              <div class="game-header">
+                <h3 class="game-title">Hollow Knight</h3>
+                <span class="game-rating">⭐ 4.6</span>
+              </div>
+              <p class="game-meta">Released: 24 feb 2017</p>
+              <button class="btn btn-danger btn-full add-remove-btn">
+                + Toevoegen aan collectie
+              </button>
+            </div>
+          </article>
+
+          <article class="game-card">
+            <img
+              src="assets/images/red_dead_redemption_2.png"
+              alt="Cover game 4"
+              class="game-cover"
+            />
+            <div class="game-info">
+              <div class="game-header">
+                <h3 class="game-title">Red Dead Redemption 2</h3>
+                <span class="game-rating">⭐ 4.7</span>
+              </div>
+              <p class="game-meta">Released: 26 okt 2018</p>
+              <button class="btn btn-danger btn-full add-remove-btn">
+                + Toevoegen aan collectie
+              </button>
+            </div>
+          </article>
+
+          <article class="game-card">
+            <img
+              src="assets/images/the_witcher.png"
+              alt="Cover game 5"
+              class="game-cover"
+            />
+            <div class="game-info">
+              <div class="game-header">
+                <h3 class="game-title">The Witcher 3</h3>
+                <span class="game-rating">⭐ 4.9</span>
+              </div>
+              <p class="game-meta">Released: 19 mei 2015</p>
+              <button class="btn btn-danger btn-full add-remove-btn">
+                + Toevoegen aan collectie
+              </button>
+            </div>
+          </article>
+
+          <article class="game-card">
+            <img
+              src="assets/images/god_of_war.png"
+              alt="Cover game 6"
+              class="game-cover"
+            />
+            <div class="game-info">
+              <div class="game-header">
+                <h3 class="game-title">God of War</h3>
+                <span class="game-rating">⭐ 4.8</span>
+              </div>
+              <p class="game-meta">Released: 20 apr 2018</p>
+              <button class="btn btn-danger btn-full add-remove-btn">
+                + Toevoegen aan collectie
+              </button>
+            </div>
+          </article>
+
+          <article class="game-card">
+            <img
+              src="assets/images/placeholder.jpg"
+              alt="Cover game 7"
+              class="game-cover"
+            />
+            <div class="game-info">
+              <div class="game-header">
+                <h3 class="game-title">Grand Theft Auto V</h3>
+                <span class="game-rating">⭐ 4.5</span>
+              </div>
+              <p class="game-meta">Released: 17 sep 2013</p>
+              <button class="btn btn-success btn-full add-remove-btn">
+                ✓ In collectie
+              </button>
+            </div>
+          </article>
+
+          <article class="game-card">
+            <img
+              src="assets/images/placeholder.jpg"
+              alt="Cover game 8"
+              class="game-cover"
+            />
+            <div class="game-info">
+              <div class="game-header">
+                <h3 class="game-title">Hades</h3>
+                <span class="game-rating">⭐ 4.6</span>
+              </div>
+              <p class="game-meta">Released: 17 sep 2020</p>
+              <button class="btn btn-danger btn-full add-remove-btn">
+                + Toevoegen aan collectie
+              </button>
+            </div>
+          </article>
+
+          <article class="game-card">
+            <img
+              src="assets/images/placeholder.jpg"
+              alt="Cover game 9"
+              class="game-cover"
+            />
+            <div class="game-info">
+              <div class="game-header">
+                <h3 class="game-title">Minecraft</h3>
+                <span class="game-rating">⭐ 4.4</span>
+              </div>
+              <p class="game-meta">Released: 18 nov 2011</p>
+              <button class="btn btn-success btn-full add-remove-btn">
+                ✓ In collectie
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
     </main>
-
-</body>
+  </body>
 </html>
