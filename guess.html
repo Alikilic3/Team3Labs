@@ -1,11 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guess - GameHub</title>
+
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/main.css">
+
 </head>
 <body>
-    
+
+<header class="main-header app-header">
+
+    <div class="header-left">
+        <a href="search.html" class="logo">GameHub</a>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="search.html">Zoeken</a></li>
+                <li><a href="collection.html">Mijn Collectie</a></li>
+                <li><a href="compare.html">Vergelijken</a></li>
+                <li><a href="guess.html" class="active">Guess</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="header-right">
+        <div class="current-game-badge">
+            <span class="badge-label">Huidige Game:</span>
+            <span class="badge-title">Nog geen gekozen</span>
+        </div>
+
+        <div class="user-menu">
+            <span class="user-avatar">U1</span>
+            <a href="index.html" class="btn btn-outline btn-small">Uitloggen</a>
+        </div>
+    </div>
+
+</header>
+
+<main class="content-wrapper app-content">
+
+<section class="guess-section">
+
+<h1 class="page-title">Raad de game</h1>
+
+<div class="guess-container">
+
+<div class="stats">
+
+<div class="stat-box">
+XP: <span id="xp">0</span>
+</div>
+
+<div class="stat-box">
+Mood: <span id="mood">🙂</span>
+</div>
+
+<div class="stat-box">
+Ronde: <span id="round">1</span>/5
+</div>
+
+</div>
+
+
+<div class="guess-image-container">
+<img id="blurredImage" src="" alt="Guess Image">
+</div>
+
+
+<div class="guess-input-container">
+
+<input
+type="text"
+id="guessInput"
+class="search-input"
+placeholder="Typ je antwoord..."
+list="suggestions"
+autocomplete="off"
+>
+<datalist id="suggestions"></datalist>
+
+<button id="checkBtn" class="btn btn-primary">
+Check
+</button>
+
+</div>
+
+
+<p id="feedback" class="guess-feedback"></p>
+
+</div>
+
+</section>
+
+</main>
+
+<script src="script.js"></script>
+
 </body>
 </html>
