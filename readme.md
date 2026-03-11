@@ -31,3 +31,7 @@ git push
 - Mobiel versie nier vergeten
 - Css frameworks?
 - vergeet LOGO niet!
+
+
+=> functionele zaken moeten werken zoals login in register 
+
