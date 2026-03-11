@@ -18,7 +18,7 @@
       <nav class="main-nav">
         <ul>
           <li><a href="index.html" class="active">Projecten</a></li>
-          <li><a href="#">Over ons</a></li>
+          <li><a href="intro.html">Introductie</a></li>
         </ul>
       </nav>
 
@@ -40,7 +40,7 @@
           <div class="project-content">
             <h2>GameHub</h2>
             <p>Ontdek, beheer en vergelijk videogames via de RAWG database.</p>
-            <a href="search.html" class="btn btn-primary btn-full"
+            <a href="#" id="gamehub-btn" class="btn btn-primary btn-full"
               >Kies GameHub</a
             >
           </div>
@@ -59,7 +59,57 @@
             </button>
           </div>
         </section>
+        <section class="project-card">
+          <img src="assets/images/placeholder.jpg" alt="Ander Project" />
+          <div class="project-content">
+            <h2>Project 3 (Gesloten)</h2>
+            <p>
+              Dit is een ander groepsproject. Je hebt hier momenteel geen
+              toegang toe.
+            </p>
+            <button class="btn btn-disabled btn-full" disabled>
+              Geen toegang
+            </button>
+          </div>
+        </section>
       </div>
     </main>
+    <dialog id="login-popup" class="modal">
+      <div class="modal-content">
+        <h2>Opgepast 🚨</h2>
+        <p>
+          Gebruiker nog niet ingelogd. Log in of registreer om toegang te
+          krijgen tot dit project.
+        </p>
+        <div class="modal-actions">
+          <button id="close-popup" class="btn btn-outline">Sluiten</button>
+          <a href="login.html" class="btn btn-primary">Naar Login</a>
+          <button id="next-popup" class="btn btn-outline">
+            Toch verder gaan
+          </button>
+        </div>
+      </div>
+    </dialog>
+    <script>
+      const popup = document.getElementById("login-popup");
+      const openBtn = document.getElementById("gamehub-btn");
+      const closeBtn = document.getElementById("close-popup");
+      const nextBtn = document.getElementById("next-popup");
+
+      // 1. Als je op 'Kies GameHub' klikt, open de pop-up
+      openBtn.addEventListener("click", function (event) {
+        event.preventDefault(); // Zorgt dat de link niet naar een andere pagina springt
+        popup.showModal(); // Dit is de magische code die de pop-up toont
+      });
+
+      // 2.Als je op 'Sluiten' klikt, sluit de pop-up
+      closeBtn.addEventListener("click", function () {
+        popup.close();
+      });
+      // 3. Als je op 'Toch verder gaan' klikt, ga naar de GameHub
+      nextBtn.addEventListener("click", function () {
+        window.location.href = "search.html"; // Dit stuurt de bezoeker door
+      });
+    </script>
   </body>
 </html>

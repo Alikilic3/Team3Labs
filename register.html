@@ -3,50 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registreren - GameHub</title>
+    <title>team3Labs - Registreren</title>
     
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/register.css">
 </head>
 <body>
 
     <header class="main-header">
         <a href="index.html" class="logo">team3Labs</a>
+        
         <nav class="main-nav">
             <ul>
                 <li><a href="index.html">Projecten</a></li>
+                <li><a href="intro.html">Introductie</a></li>
             </ul>
         </nav>
+
+        <div class="auth-buttons">
+            <a href="login.html" class="btn btn-outline">Login</a>
+            <a href="register.html" class="btn btn-primary active">Registreren</a>
+        </div>
     </header>
 
-    <main class="content-wrapper">
-        <div class="auth-container">
-            <h1 class="page-title">Account aanmaken</h1>
-            <p class="page-subtitle">Start met het bouwen van je collectie</p>
+    <main class="content-wrapper auth-page">
+        <div class="auth-card">
+            <h1 class="page-title">Account Aanmaken</h1>
+            <p class="page-subtitle">Word lid van team3Labs</p>
             
-            <form class="auth-form" action="login.html">
+            <form action="#" method="POST">
                 <div class="form-group">
-                    <label for="username">Gebruikersnaam</label>
-                    <input type="text" id="username" required placeholder="Kies een naam">
-                </div>
 
-                <div class="form-group">
-                    <label for="email">E-mailadres</label>
-                    <input type="email" id="email" required placeholder="jouw@email.com">
+                    <label for="username">Gebruikersnaam:</label>
+                    <input type="text" id="username" name="username" placeholder="Kies een unieke naam" required>
+                
+                    <label for="email">E-mailadres:</label>
+                    <input type="email" id="email" name="email" placeholder="naam@email.com" required>
+                
+                    <label for="telefoon">Telefoonnummer:</label>
+                    <input type="tel" id="telefoon" name="telefoon" placeholder="+32 123 45 67 89" required>
+                    
+                
+                    <label for="password">Wachtwoord:</label>
+                    <input type="password" id="password" name="password" placeholder="Minimaal 8 tekens" required>
+                
+                    <label for="password-confirm">Bevestig Wachtwoord:</label>
+                    <input type="password" id="password-confirm" name="password-confirm" placeholder="Typ je wachtwoord opnieuw" required>
                 </div>
                 
-                <div class="form-group">
-                    <label for="password">Wachtwoord</label>
-                    <input type="password" id="password" required placeholder="Kies een sterk wachtwoord">
-                </div>
-                
-                <button type="submit" class="btn btn-primary btn-full">Registreer</button>
+                <button type="submit" class="btn btn-primary btn-full">Registreren</button>
             </form>
 
-            <p class="auth-link">Heb je al een account? <a href="login.html">Log hier in</a>.</p>
+            <div class="auth-footer">
+                <p>Heb je al een account? <a href="login.html" class="text-link">Log hier in</a></p>
+            </div>
         </div>
     </main>
 
