@@ -1,0 +1,66 @@
+/* Specifieke styling voor intr.html */
+
+.instructions-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    background-color: var(--bg-card);
+    padding: 3rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.instructions-container .page-title,
+.instructions-container .page-subtitle {
+    text-align: center;
+}
+
+.instructions-container .page-subtitle {
+    margin-bottom: 3rem;
+}
+
+.instruction-step {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: flex-start;
+}
+
+.step-number {
+    background-color: var(--primary-color);
+    color: #000;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.step-text h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.step-text p {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.action-box {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.action-box p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+}
