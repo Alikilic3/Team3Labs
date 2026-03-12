@@ -22,7 +22,11 @@ dit is een testt voor branch
 => HOE MOET IK PUSHEN/COMMITEN
 git add .
 git commit -m "search pagina"
-git push
+
+git checkout main
+git pull origin main
+git merge naamvanmerge
+git push origin main
 
 => WIE DOET WAT
 
