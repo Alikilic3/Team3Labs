@@ -1,0 +1,25 @@
+{
+  "name": "team3labs",
+  "version": "1.0.0",
+  "description": "dit is een testt voor branch\r => HOE WERKEN MET BRANCH",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alikilic3/Team3Labs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Alikilic3/Team3Labs/issues"
+  },
+  "homepage": "https://github.com/Alikilic3/Team3Labs#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  }
+}
