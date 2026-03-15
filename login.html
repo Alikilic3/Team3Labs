@@ -1,11 +1,56 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <p>U moeder om te testen</p>
-  </body>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>team3Labs - Login</title>
+    
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="index.html" class="logo">team3Labs</a>
+        
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Projecten</a></li>
+                <li><a href="intro.html">Introductie</a></li>
+            </ul>
+        </nav>
+
+        <div class="auth-buttons">
+            <a href="login.html" class="btn btn-outline active">Login</a>
+            <a href="register.html" class="btn btn-primary">Registreren</a>
+        </div>
+    </header>
+
+    <main class="content-wrapper auth-page">
+        <div class="auth-card">
+            <h1 class="page-title">Welkom terug</h1>
+            <p class="page-subtitle">Log in op je team3Labs account</p>
+            
+            <form action="#" method="get">
+                <div class="form-group">
+                    <label for="email">E-mailadres:</label>
+                    <input type="email" id="email" name="email" placeholder="naam@email.com" required>
+                
+                    <label for="password">Wachtwoord:</label>
+                    <input type="password" id="password" name="password" placeholder="Vul je wachtwoord in" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">Inloggen</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Nog geen account? <a href="register.html" class="text-link">Registreer hier</a></p>
+            </div>
+        </div>
+    </main>
+
+</body>
 </html>

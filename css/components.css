@@ -339,3 +339,41 @@
 .add-remove-btn {
   margin-top: auto;
 }
+
+
+/*  Modal / Pop-up Styling */
+.modal {
+    border: none;
+    border-radius: var(--radius);
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    padding: 2.5rem;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    margin: auto; /* Zorgt dat hij perfect in het midden staat */
+}
+
+/* De donkere waas achter de pop-up */
+.modal::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px); /* Geeft een mooi wazig effect aan de achtergrond */
+}
+
+.modal h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.modal p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
