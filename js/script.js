@@ -3,13 +3,7 @@
 // =========================
 let currentRound = 0;
 let xp = 0;
-<<<<<<< HEAD
 let correctAnswer = "";
-=======
-const totalRounds = 5;
-const maxBlur = 8; // start blur in px
-const blurStep = 2; // blur vermindering per fout
->>>>>>> mehmet
 
 const totalRounds = 5;
 const maxBlur = 8;
@@ -36,22 +30,11 @@ let currentBlur = maxBlur;
 // =========================
 // Random game ophalen
 // =========================
-<<<<<<< HEAD
 async function fetchRandomGame() {
-=======
-fetch("games.json")
-  .then((res) => res.json())
-  .then((data) => {
-    games = data;
-    startRound();
-  })
-  .catch((err) => console.error("Kan games.json niet laden:", err));
->>>>>>> mehmet
-
   const page = Math.floor(Math.random() * 20) + 1;
 
   const res = await fetch(
-    `https://api.rawg.io/api/games?key=${API_KEY}&page=${page}&page_size=20`
+    `https://api.rawg.io/api/games?key=${API_KEY}&page=${page}&page_size=20`,
   );
 
   const data = await res.json();
@@ -65,10 +48,8 @@ fetch("games.json")
 // Start ronde
 // =========================
 async function startRound() {
-
   if (currentRound >= totalRounds) {
-
-    feedback.textContent =` Game over! Je XP: ${xp}`;
+    feedback.textContent = ` Game over! Je XP: ${xp}`;
 
     blurredImage.style.display = "none";
     guessInput.disabled = true;
@@ -79,19 +60,9 @@ async function startRound() {
 
   const game = await fetchRandomGame();
 
-<<<<<<< HEAD
   correctAnswer = game.name.toLowerCase();
 
   blurredImage.src = game.background_image;
-=======
-  // Vul de autocomplete lijst
-  datalist.innerHTML = "";
-  game.suggestions.forEach((s) => {
-    const option = document.createElement("option");
-    option.value = s;
-    datalist.appendChild(option);
-  });
->>>>>>> mehmet
 
   guessInput.value = "";
   feedback.textContent = "";
@@ -99,7 +70,7 @@ async function startRound() {
   wrongAttempts = 0;
 
   currentBlur = maxBlur;
-  blurredImage.style.filter =` blur(${currentBlur}px)`;
+  blurredImage.style.filter = ` blur(${currentBlur}px)`;
 
   roundSpan.textContent = currentRound + 1;
 }
@@ -108,13 +79,11 @@ async function startRound() {
 // Check antwoord
 // =========================
 checkBtn.addEventListener("click", () => {
-
   const answer = guessInput.value.trim().toLowerCase();
 
   if (!answer) return;
 
   if (correctAnswer.includes(answer)) {
-
     feedback.textContent = "Correct!";
     feedback.classList.remove("wrong");
     feedback.classList.add("correct");
@@ -127,12 +96,10 @@ checkBtn.addEventListener("click", () => {
     currentRound++;
 
     setTimeout(startRound, 1200);
-
   } else {
-
     wrongAttempts++;
 
-    feedback.textContent =` Fout! Poging ${wrongAttempts}/5`;
+    feedback.textContent = ` Fout! Poging ${wrongAttempts}/5`;
     feedback.classList.remove("correct");
     feedback.classList.add("wrong");
 
@@ -141,10 +108,9 @@ checkBtn.addEventListener("click", () => {
     xp = Math.max(0, xp - 2);
 
     currentBlur = Math.max(0, currentBlur - blurStep);
-    blurredImage.style.filter =` blur(${currentBlur}px)`;
+    blurredImage.style.filter = ` blur(${currentBlur}px)`;
 
     if (wrongAttempts >= maxWrongAttempts) {
-
       feedback.textContent = `Het juiste antwoord was: ${correctAnswer}`;
 
       blurredImage.style.filter = "blur(0px)";
@@ -161,18 +127,13 @@ checkBtn.addEventListener("click", () => {
 // Enter toets
 // =========================
 guessInput.addEventListener("keyup", (e) => {
-
   if (e.key === "Enter") {
     checkBtn.click();
   }
-<<<<<<< HEAD
-
 });
 
 // =========================
 // Start spel
 // =========================
 startRound();
-=======
-});
->>>>>>> mehmet
+// test yunus
