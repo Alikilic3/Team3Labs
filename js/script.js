@@ -3,7 +3,13 @@
 // =========================
 let currentRound = 0;
 let xp = 0;
+<<<<<<< HEAD
 let correctAnswer = "";
+=======
+const totalRounds = 5;
+const maxBlur = 8; // start blur in px
+const blurStep = 2; // blur vermindering per fout
+>>>>>>> mehmet
 
 const totalRounds = 5;
 const maxBlur = 8;
@@ -30,7 +36,17 @@ let currentBlur = maxBlur;
 // =========================
 // Random game ophalen
 // =========================
+<<<<<<< HEAD
 async function fetchRandomGame() {
+=======
+fetch("games.json")
+  .then((res) => res.json())
+  .then((data) => {
+    games = data;
+    startRound();
+  })
+  .catch((err) => console.error("Kan games.json niet laden:", err));
+>>>>>>> mehmet
 
   const page = Math.floor(Math.random() * 20) + 1;
 
@@ -63,9 +79,19 @@ async function startRound() {
 
   const game = await fetchRandomGame();
 
+<<<<<<< HEAD
   correctAnswer = game.name.toLowerCase();
 
   blurredImage.src = game.background_image;
+=======
+  // Vul de autocomplete lijst
+  datalist.innerHTML = "";
+  game.suggestions.forEach((s) => {
+    const option = document.createElement("option");
+    option.value = s;
+    datalist.appendChild(option);
+  });
+>>>>>>> mehmet
 
   guessInput.value = "";
   feedback.textContent = "";
@@ -139,6 +165,7 @@ guessInput.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     checkBtn.click();
   }
+<<<<<<< HEAD
 
 });
 
@@ -146,3 +173,6 @@ guessInput.addEventListener("keyup", (e) => {
 // Start spel
 // =========================
 startRound();
+=======
+});
+>>>>>>> mehmet
