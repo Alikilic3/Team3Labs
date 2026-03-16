@@ -2,8 +2,8 @@ let games = [];
 let currentRound = 0;
 let xp = 0;
 const totalRounds = 5;
-const maxBlur = 8;      // start blur in px
-const blurStep = 2;     // blur vermindering per fout
+const maxBlur = 8; // start blur in px
+const blurStep = 2; // blur vermindering per fout
 
 // DOM-elementen
 const blurredImage = document.getElementById("blurredImage");
@@ -22,12 +22,12 @@ let currentBlur = maxBlur;
 // JSON laden
 // =========================
 fetch("games.json")
-  .then(res => res.json())
-  .then(data => {
+  .then((res) => res.json())
+  .then((data) => {
     games = data;
     startRound();
   })
-  .catch(err => console.error("Kan games.json niet laden:", err));
+  .catch((err) => console.error("Kan games.json niet laden:", err));
 
 function startRound() {
   if (games.length === 0) return;
@@ -47,7 +47,7 @@ function startRound() {
 
   // Vul de autocomplete lijst
   datalist.innerHTML = "";
-  game.suggestions.forEach(s => {
+  game.suggestions.forEach((s) => {
     const option = document.createElement("option");
     option.value = s;
     datalist.appendChild(option);
