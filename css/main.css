@@ -1,68 +1,120 @@
 /* Specifieke styling voor de landing page */
 .page-title {
-  font-size: 2.5rem;
-  margin-bottom: var(--spacing-sm);
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
 }
 
 .page-subtitle {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  margin-bottom: var(--spacing-lg);
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-lg);
 }
 
+/* --- Projecten Container (Hoofdpagina) --- */
+.projects-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* Twee gelijke kolommen */
+    gap: 2rem; 
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .projects-container {
+        grid-template-columns: 1fr; /* Verander naar 1 kolom op mobiel */
+    }
+}
+
+/* --- GameHub Specifieke Pagina's --- */
 .collection-hero {
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
 }
 
 .games-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
 }
 
 .game-card {
-  padding: 1rem;
-}
-
-.game-card {
-  padding: 1.5rem;
+    padding: 1.5rem;
 }
 
 .results-section {
-  margin-top: 3rem;
+    margin-top: 3rem;
 }
+
 .collection-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
 }
 
 .toolbar-left,
 .toolbar-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .toolbar-label {
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .toolbar-select {
-  padding: 0.6rem 0.9rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  background: white;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    background: white;
 }
 
 .collection-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+/* --- Modal (Pop-up) Styling --- */
+.modal-overlay {
+    display: none; /* Standaard verborgen */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Donkere overlay */
+    z-index: 1000; /* Zorgt dat het over alles heen valt */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Wanneer we deze class toevoegen met JS, wordt de pop-up zichtbaar */
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--bg-card);
+    border: 1px solid var(--primary-color);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content h2 {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-main);
+}
+
+.modal-content p {
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-muted);
 }

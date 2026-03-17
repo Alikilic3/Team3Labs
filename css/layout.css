@@ -47,20 +47,10 @@ body {
     text-align: center;
 }
 
-.projects-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Twee gelijke kolommen */
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-/* Responsive (Voor mobiel: 1 kolom onder elkaar) */
+/* Responsive Layout (Alleen voor de header) */
 @media (max-width: 768px) {
     .main-header {
         flex-direction: column;
         gap: var(--spacing-md);
-    }
-    .projects-container {
-        grid-template-columns: 1fr;
     }
 }
