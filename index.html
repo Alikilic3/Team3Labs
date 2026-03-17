@@ -36,7 +36,7 @@
 
       <div class="projects-container">
         <section class="project-card">
-          <img src="assets/images/placeholder.jpg" alt="GameHub Project" />
+          <img src="assets/images/Gamehub.jpeg" alt="GameHub Project" />
           <div class="project-content">
             <h2>GameHub</h2>
             <p>Ontdek, beheer en vergelijk videogames via de RAWG database.</p>
@@ -47,29 +47,27 @@
         </section>
 
         <section class="project-card">
-          <img src="assets/images/placeholder.jpg" alt="Ander Project" />
+          <img src="assets/images/legomaster.jpg" alt="LegoMasters" />
           <div class="project-content">
-            <h2>Project 2 (Gesloten)</h2>
+            <h2>LegoMasters (Gesloten)</h2>
             <p>
               Dit is een ander groepsproject. Je hebt hier momenteel geen
               toegang toe.
             </p>
-            <button class="btn btn-disabled btn-full" disabled>
-              Geen toegang
+            <button class="btn btn-outline btn-full" onclick="openPopup()">
+              Bekijk LegoMasters
             </button>
           </div>
         </section>
         <section class="project-card">
-          <img src="assets/images/placeholder.jpg" alt="Ander Project" />
+          <img src="assets/images/Music1.png" alt="MusicMatch" />
           <div class="project-content">
-            <h2>Project 3 (Gesloten)</h2>
+            <h2>MusicMatch (Gesloten)</h2>
             <p>
               Dit is een ander groepsproject. Je hebt hier momenteel geen
               toegang toe.
             </p>
-            <button class="btn btn-disabled btn-full" disabled>
-              Geen toegang
-            </button>
+            <button class="btn btn-outline btn-full" onclick="openPopup()">Bekijk MusicMatch</button>
           </div>
         </section>
       </div>
@@ -111,5 +109,14 @@
         window.location.href = "search.html"; // Dit stuurt de bezoeker door
       });
     </script>
+    <div id="unavailableModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Nog niet beschikbaar</h2>
+            <p>Je hebt helaas (nog) geen toegang tot dit project. Je kunt momenteel alleen GameHub bekijken.</p>
+            <button class="btn btn-primary" onclick="closePopup()">Begrepen</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
   </body>
 </html>
