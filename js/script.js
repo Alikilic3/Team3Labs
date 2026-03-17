@@ -49,7 +49,10 @@ async function fetchRandomGame() {
 // =========================
 async function startRound() {
   if (currentRound >= totalRounds) {
-    feedback.textContent = ` Game over! Je XP: ${xp}`;
+      saveScore(xp);
+      showScoreboard();
+    return;
+  
 
     blurredImage.style.display = "none";
     guessInput.disabled = true;
@@ -132,6 +135,42 @@ guessInput.addEventListener("keyup", (e) => {
   }
 });
 
+
+
+function saveScore(score) {
+  const scores = JSON.parse(localStorage.getItem("scores")) || [];
+
+  scores.push({
+    xp: score,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("scores", JSON.stringify(scores));
+}
+
+function showScoreboard() {
+  const scores = JSON.parse(localStorage.getItem("scores")) || [];
+
+  let html = "<h2>Scorebord</h2>";
+
+  if (scores.length === 0) {
+    html += "<p>Nog geen scores</p>";
+  } else {
+    html += "<ul>";
+
+    scores
+      .sort((a, b) => b.xp - a.xp)
+      .forEach(score => {
+        html += `<li>${score.xp} XP - ${score.date}</li>`;
+      });
+
+    html += "</ul>";
+  }
+
+  html += '<button class="btn-primary-custom" onclick="location.reload()">Opnieuw spelen</button>';
+
+  document.querySelector(".guess-container").innerHTML = html;
+}
 // =========================
 // Start spel
 // =========================
