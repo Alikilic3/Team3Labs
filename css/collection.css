@@ -1,0 +1,148 @@
+  /* Collection Toolbar */
+.collection-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.collection-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-card);
+  padding: 15px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.toolbar-left, .toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.toolbar-label {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.toolbar-select {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  font-family: inherit;
+}
+
+.toolbar-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+   /* Collection Grid & Knoppen */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Zorg dat de knoppen onderaan de kaart altijd beneden blijven staan */
+.collection-actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Kleuren voor de knoppen in de collectie */
+.btn-success {
+  background-color: #4caf50;
+  color: #fff;
+}
+.btn-success:hover {
+  background-color: #45a049;
+}
+
+.btn-danger {
+  background-color: transparent;
+  border: 1px solid #f44336;
+  color: #f44336;
+}
+.btn-danger:hover {
+  background-color: #f44336;
+  color: #fff;
+}
+   /* GameCard Statistieken (Dashboard Look) */
+
+.stat-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Maakt 2 kolommen naast elkaar */
+  gap: 10px; /* Ruimte tussen de blokjes */
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+}
+
+.stat-row {
+  background-color: rgba(255, 255, 255, 0.03); /* Zeer subtiele lichte achtergrond */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column; /* Zet label boven en waarde onder */
+  gap: 5px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Een klein hover-effectje op de stat-blokjes */
+.stat-row:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+  transform: translateY(-2px);
+}
+
+/* De tekst van de labels (bijv. "SPEELTIJD") */
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase; /* Maakt de tekst in HOOFDLETTERS */
+  letter-spacing: 0.5px;     /* Iets meer ruimte tussen de letters */
+  display: flex;
+  align-items: center;
+}
+
+.stat-label i {
+  margin-right: 6px;
+  font-size: 0.95rem;
+  color: var(--primary-color); /* Jouw paarse accentkleur voor de icoontjes */
+}
+
+/* De waardes (bijv. "150 uur") */
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 800; /* Extra dikgedrukt */
+  color: var(--text-main);
+}
+
+/* --- Speciale opmaak voor de laatste rij (Status) --- */
+/* We willen dat de statusbalk over de hele breedte gaat, niet in een klein blokje */
+.stat-row:last-child {
+  grid-column: span 2; /* Pak de volle breedte van de 2 kolommen */
+  flex-direction: row; /* Zet label en waarde naast elkaar */
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(187, 134, 252, 0.05); /* Subtiele paarse gloed */
+  border: 1px solid rgba(187, 134, 252, 0.2);
+}
+
+.stat-row:last-child .stat-label {
+  font-size: 0.85rem;
+}
+
+.stat-row:last-child .stat-value {
+  font-size: 1rem;
+}
