@@ -15,6 +15,20 @@ body {
     padding: var(--spacing-md) var(--spacing-lg);
     background-color: var(--bg-card);
     border-bottom: 1px solid var(--border-color);
+    position: relative; /* Nodig zodat het mobiele menu hieronder kan 'hangen' */
+}
+
+/* Groeperen van elementen links en rechts in de header */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Ruimte tussen logo en navigatie */
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .main-header .logo {
@@ -32,9 +46,23 @@ body {
     color: var(--primary-color);
 }
 
-.auth-buttons {
-    display: flex;
-    gap: var(--spacing-md);
+/* --- Hamburger Knop (Standaard verborgen op PC) --- */
+.hamburger {
+    display: none; 
+    flex-direction: column;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+    transition: all 0.3s ease;
 }
 
 /* Main Content Layout */
@@ -47,10 +75,52 @@ body {
     text-align: center;
 }
 
-/* Responsive Layout (Alleen voor de header) */
+/* ==============================================
+   Responsive Layout (Alleen voor mobiel/tablets) 
+   ============================================== */
 @media (max-width: 768px) {
-    .main-header {
+    .hamburger {
+        display: flex; 
+    }
+
+    .main-nav {
+        display: none; /* Standaard onzichtbaar */
+        position: absolute;
+        top: 100%; 
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-card);
+        border-bottom: 1px solid var(--border-color);
+        padding: var(--spacing-lg) 0;
+        z-index: 1000;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+    }
+
+    /* Class wordt toegevoegd door main.js */
+    .main-nav.show-menu {
+        display: block;
+    }
+
+    .main-nav ul {
         flex-direction: column;
+        align-items: center;
         gap: var(--spacing-md);
+    }
+
+    /* Verberg op kleine schermen lange teksten of pas de gap aan */
+    .badge-label {
+        display: none;
+    }
+    
+    .header-left {
+        justify-content: space-between;
+        width: 100%; /* Zorgt dat logo links staat en knop rechts (als header-right onderaan valt) */
+    }
+    
+    /* Maak de totale header een column als het echt krap wordt, 
+       maar hou de top-bar met logo en knop intact */
+    .main-header {
+        flex-wrap: wrap;
+        gap: 15px;
     }
 }
