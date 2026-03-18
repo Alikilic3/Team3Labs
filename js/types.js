@@ -1,2 +1,1 @@
-// types.ts
 export {};
