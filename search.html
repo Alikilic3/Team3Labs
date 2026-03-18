@@ -4,12 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zoeken - GameHub</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
 
+    <link rel="stylesheet" href="css/search.css" />
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/layout.css" />
     <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
     <header class="main-header app-header">
@@ -29,7 +33,7 @@
       <div class="header-right">
         <div class="current-game-badge">
           <span class="badge-label">Huidige Game:</span>
-          <span class="badge-title">Nog geen gekozen</span>
+          <span class="badge-title">Geen gekozen</span>
         </div>
 
         <div class="user-menu">
@@ -42,7 +46,12 @@
     <main class="content-wrapper app-content">
       <section class="search-section">
         <h1 class="page-title">Ontdek nieuwe games!</h1>
-
+        <div class="search-modes">
+          <button id="favoritesViewBtn" class="mode-btn active">
+            Mijn favoriete games
+          </button>
+          <button id="searchViewBtn" class="mode-btn">Zoek nieuwe games</button>
+        </div>
         <div class="search-box-container">
           <input
             type="text"
@@ -70,6 +79,12 @@
         <h2>Zoekresultaten</h2>
         <div class="games-grid" id="gamesGrid"></div>
       </section>
+      <div id="gameModal" class="game-modal hidden">
+        <div class="game-modal-content">
+          <button id="closeModal" class="close-modal">&times;</button>
+          <div id="modalBody"></div>
+        </div>
+      </div>
     </main>
     <script type="module" src="js/search.js"></script>
   </body>
