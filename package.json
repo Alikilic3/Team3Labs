@@ -4,6 +4,7 @@
   "description": "dit is een testt voor branch\r => HOE WERKEN MET BRANCH",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +22,8 @@
   "dependencies": {
     "dotenv": "^17.3.1",
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }
