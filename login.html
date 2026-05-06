@@ -33,7 +33,9 @@
         <h1 class="page-title">Welkom terug</h1>
         <p class="page-subtitle">Log in op je team3Labs account</p>
 
-        <form action="#" method="get">
+        <p id="errorMsg" style="color: red; display: none;"></p>
+
+        <form id="loginForm">
           <div class="form-group">
             <label for="email">E-mailadres:</label>
             <input
@@ -67,5 +69,7 @@
         </div>
       </div>
     </main>
+
+    <script src="js/login.js"></script>
   </body>
 </html>
