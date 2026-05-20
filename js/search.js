@@ -6,7 +6,6 @@ const searchViewBtn = document.getElementById("searchViewBtn");
 const gameModal = document.getElementById("gameModal");
 const modalBody = document.getElementById("modalBody");
 const closeModal = document.getElementById("closeModal");
-const API_KEY = "832eedeb890b48e0bbd42c3105728fe9";
 let currentGames = [];
 let searchTimeout;
 // ===========================
@@ -134,7 +133,7 @@ async function renderFavorites() {
     }
 }
 // ===========================
-// Games zoeken
+// Games zoeken via backend proxy
 // ===========================
 async function searchGames() {
     const query = searchInput.value.trim();
@@ -145,7 +144,7 @@ async function searchGames() {
     try {
         favoritesViewBtn.classList.remove("active");
         searchViewBtn.classList.add("active");
-        const response = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(query)}`);
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
         if (!response.ok)
             throw new Error(response.statusText);
         const data = await response.json();
@@ -168,9 +167,12 @@ function getPlatformIcons(name) {
         return `<i class="bi bi-nintendo-switch"></i>`;
     return `<i class="bi bi-controller"></i>`;
 }
+// ===========================
+// Game modal via backend proxy
+// ===========================
 async function openGameModal(gameId) {
     try {
-        const response = await fetch(`https://api.rawg.io/api/games/${gameId}?key=${API_KEY}`);
+        const response = await fetch(`/api/games/${gameId}`);
         if (!response.ok)
             throw new Error(response.statusText);
         const game = await response.json();

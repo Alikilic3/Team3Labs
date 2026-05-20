@@ -9,8 +9,6 @@ const gameModal = document.getElementById("gameModal") as HTMLDivElement;
 const modalBody = document.getElementById("modalBody") as HTMLDivElement;
 const closeModal = document.getElementById("closeModal") as HTMLButtonElement;
 
-const API_KEY = "832eedeb890b48e0bbd42c3105728fe9";
-
 let currentGames: any[] = [];
 let searchTimeout: number | undefined;
 
@@ -152,7 +150,7 @@ async function renderFavorites(): Promise<void> {
 }
 
 // ===========================
-// Games zoeken
+// Games zoeken via backend proxy
 // ===========================
 async function searchGames(): Promise<void> {
     const query = searchInput.value.trim();
@@ -166,9 +164,7 @@ async function searchGames(): Promise<void> {
         favoritesViewBtn.classList.remove("active");
         searchViewBtn.classList.add("active");
 
-        const response = await fetch(
-            `https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(query)}`
-        );
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
 
         if (!response.ok) throw new Error(response.statusText);
 
@@ -189,11 +185,12 @@ function getPlatformIcons(name: string): string {
     return `<i class="bi bi-controller"></i>`;
 }
 
+// ===========================
+// Game modal via backend proxy
+// ===========================
 async function openGameModal(gameId: number): Promise<void> {
     try {
-        const response = await fetch(
-            `https://api.rawg.io/api/games/${gameId}?key=${API_KEY}`
-        );
+        const response = await fetch(`/api/games/${gameId}`);
 
         if (!response.ok) throw new Error(response.statusText);
 

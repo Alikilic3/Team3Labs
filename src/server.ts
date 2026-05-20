@@ -74,22 +74,6 @@ app.post("/api/login", async (req, res) => {
 });
 
 // ===========================
-// Start server
-// ===========================
-async function main() {
-    try {
-        await client.connect();
-        console.log("Verbonden met MongoDB!");
-
-        app.listen(PORT, () => {
-            console.log(`Server draait op http://localhost:${PORT}`);
-        });
-
-    } catch (e) {
-        console.error("Fout bij verbinden:", e);
-    }
-}
-// ===========================
 // Favorieten ophalen
 // ===========================
 app.get("/api/favorites/:userId", async (req, res) => {
@@ -143,4 +127,106 @@ app.delete("/api/favorites/:userId/:gameId", async (req, res) => {
         res.status(500).json({ error: "Serverfout" });
     }
 });
+
+// ===========================
+// RAWG Proxy - Zoeken met caching
+// ===========================
+app.get("/api/search", async (req, res) => {
+    try {
+        const query = req.query.q as string;
+        const RAWG_KEY = process.env.RAWG_API_KEY;
+
+        // Eerst in cache kijken
+        const cached = await client.db("gamehub")
+            .collection("cache")
+            .findOne({ query: query.toLowerCase() });
+
+        if (cached) {
+            console.log(`✅ Cache hit voor: ${query}`);
+            res.json({ results: cached.results });
+            return;
+        }
+
+        // Niet in cache — ophalen van RAWG
+        console.log(`🔄 Cache miss voor: ${query} — ophalen van RAWG`);
+        const response = await fetch(
+            `https://api.rawg.io/api/games?key=${RAWG_KEY}&search=${encodeURIComponent(query)}&page_size=20`
+        );
+
+        const data = await response.json();
+
+        // Opslaan in cache
+        await client.db("gamehub")
+            .collection("cache")
+            .insertOne({
+                query: query.toLowerCase(),
+                results: data.results,
+                cachedAt: new Date()
+            });
+
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "Fout bij ophalen games" });
+    }
+});
+
+// ===========================
+// RAWG Proxy - Game details met caching
+// ===========================
+app.get("/api/games/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const RAWG_KEY = process.env.RAWG_API_KEY;
+
+        // Eerst in cache kijken
+        const cached = await client.db("gamehub")
+            .collection("cache_games")
+            .findOne({ gameId: id });
+
+        if (cached) {
+            console.log(`✅ Cache hit voor game: ${id}`);
+            res.json(cached.game);
+            return;
+        }
+
+        // Niet in cache — ophalen van RAWG
+        console.log(`🔄 Cache miss voor game: ${id} — ophalen van RAWG`);
+        const response = await fetch(
+            `https://api.rawg.io/api/games/${id}?key=${RAWG_KEY}`
+        );
+
+        const data = await response.json();
+
+        // Opslaan in cache
+        await client.db("gamehub")
+            .collection("cache_games")
+            .insertOne({
+                gameId: id,
+                game: data,
+                cachedAt: new Date()
+            });
+
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "Fout bij ophalen game details" });
+    }
+});
+
+// ===========================
+// Start server
+// ===========================
+async function main() {
+    try {
+        await client.connect();
+        console.log("✅ Verbonden met MongoDB!");
+
+        app.listen(PORT, () => {
+            console.log(`🚀 Server draait op http://localhost:${PORT}`);
+        });
+
+    } catch (e) {
+        console.error("❌ Fout bij verbinden:", e);
+    }
+}
+
 main();
