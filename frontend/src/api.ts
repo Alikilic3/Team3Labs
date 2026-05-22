@@ -1,4 +1,4 @@
-import { RawgResponse, Game } from "./types";
+import { RawgResponse, Game } from "../backend/types";
 
 const API_KEY = "832eedeb890b48e0bbd42c3105728fe9";
 const BASE_URL = "https://api.rawg.io/api";

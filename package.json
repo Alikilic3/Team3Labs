@@ -4,7 +4,7 @@
   "description": "GameHub - Team3Labs project",
   "main": "js/server.js",
   "scripts": {
-    "start": "nodemon src/server.ts"
+    "start": "nodemon backend/server.ts"
 },
   "repository": {
     "type": "git",

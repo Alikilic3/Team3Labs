@@ -1,25 +1,15 @@
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
 
-  <% if (typeof useBootstrapIcons !== 'undefined' && useBootstrapIcons) { %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-  <% } %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
 
-  <link rel="stylesheet" href="/css/reset.css" />
-  <link rel="stylesheet" href="/css/variables.css" />
-  <link rel="stylesheet" href="/css/layout.css" />
-  <link rel="stylesheet" href="/css/components.css" />
-
-  <% if (typeof customCss !== 'undefined') { %>
-    <% if (Array.isArray(customCss)) { %>
-      <% customCss.forEach(function(css) { %>
-        <link rel="stylesheet" href="/css/<%= css %>" />
-      <% }); %>
-    <% } else { %>
-      <link rel="stylesheet" href="/css/<%= customCss %>" />
+    <% if (typeof extraCss !== 'undefined') { %>
+        <link rel="stylesheet" href="/css/<%= extraCss %>">
     <% } %>
-  <% } %>
 </head>
-

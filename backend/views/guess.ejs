@@ -1,35 +1,33 @@
 <!doctype html>
 <html lang="nl">
-  <%- include('partials/head', { title: 'Guess - GameHub', useBootstrapIcons: true, customCss: ['main.css', 'guess.css'] }) %>
+<%- include('partials/head', { title: 'Guess - GameHub', extraCss: 'guess.css' }) %>
 <body>
-  <%- include('partials/header-app', { activePage: 'guess' }) %>
+<%- include('partials/header-app', { activePage: 'guess' }) %>
 
-  <main class="content-wrapper app-content">
+<main class="content-wrapper app-content">
     <section class="guess-section">
-      <h1 class="page-title">Raad de game</h1>
+        <h1 class="page-title">Raad de game</h1>
+        <div class="guess-container">
+            <div class="stats">
+                <div class="stat-box">XP: <span id="xp">0</span></div>
+                <div class="stat-box">Mood: <span id="mood">🙂</span></div>
+                <div class="stat-box">Ronde: <span id="round">1</span>/5</div>
+            </div>
 
-      <div class="guess-container">
-        <div class="stats">
-          <div class="stat-box">XP: <span id="xp">0</span></div>
-          <div class="stat-box">Mood: <span id="mood">🙂</span></div>
-          <div class="stat-box">Ronde: <span id="round">1</span>/5</div>
+            <div class="guess-image-container">
+                <img id="blurredImage" src="/" alt="Guess Image">
+            </div>
+
+            <div class="guess-input-container">
+                <input type="text" id="guessInput" class="search-input" placeholder="Typ je antwoord..." list="suggestions" autocomplete="off">
+                <datalist id="suggestions"></datalist>
+                <button id="checkBtn" class="btn btn-primary">Check</button>
+            </div>
+
+            <p id="feedback" class="guess-feedback"></p>
         </div>
-
-        <div class="guess-image-container">
-          <img id="blurredImage" src="/" alt="Guess Image" />
-        </div>
-
-        <div class="guess-input-container">
-          <input type="text" id="guessInput" class="search-input" placeholder="Typ je antwoord..." list="suggestions" autocomplete="off" />
-          <datalist id="suggestions"></datalist>
-          <button id="checkBtn" class="btn btn-primary">Check</button>
-        </div>
-
-        <p id="feedback" class="guess-feedback"></p>
-      </div>
     </section>
-  </main>
-  <%- include('partials/footer') %>
-  <script src="/js/script.js"></script>
-</body>
-</html>
+</main>
+
+<script src="/js/script.js"></script>
+<%- include('partials/footer') %>

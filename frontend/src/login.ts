@@ -28,7 +28,7 @@ if (loginForm) {
             localStorage.setItem("userName", data.name);
             localStorage.setItem("userXp", data.xp);
 
-            window.location.href = "search.html";
+            window.location.href = "/search";
 
         } catch (e) {
             loginErrorMsg.textContent = "Er ging iets fout, probeer opnieuw.";
