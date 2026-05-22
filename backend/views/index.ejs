@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="nl">
+  <%- include('partials/head', { title: 'Team3Labs - Projecten', customCss: 'main.css' }) %>
+  <body>
+    <%- include('partials/header', { activePage: 'index' }) %>
+
+    <main class="content-wrapper">
+      <h1 class="page-title">Kies een project</h1>
+      <p class="page-subtitle">Selecteer hieronder het project dat je wilt bekijken.</p>
+
+      <div class="projects-container">
+        <section class="project-card">
+          <img src="/assets/images/Gamehub.jpeg" alt="GameHub Project" />
+          <div class="project-content">
+            <h2>GameHub</h2>
+            <p>Ontdek, beheer en vergelijk videogames via de RAWG database.</p>
+            <a href="#" id="gamehub-btn" class="btn btn-primary btn-full">Kies GameHub</a>
+          </div>
+        </section>
+
+        <section class="project-card">
+          <img src="/assets/images/legomaster.jpg" alt="LegoMasters" />
+          <div class="project-content">
+            <h2>LegoMasters (Gesloten)</h2>
+            <p>Dit is een ander groepsproject. Je hebt hier momenteel geen toegang toe.</p>
+            <button class="btn btn-outline btn-full" onclick="openPopup()">Bekijk LegoMasters</button>
+          </div>
+        </section>
+        
+        <section class="project-card">
+          <img src="/assets/images/Music1.png" alt="MusicMatch" />
+          <div class="project-content">
+            <h2>MusicMatch (Gesloten)</h2>
+            <p>Dit is een ander groepsproject. Je hebt hier momenteel geen toegang toe.</p>
+            <button class="btn btn-outline btn-full" onclick="openPopup()">Bekijk MusicMatch</button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <dialog id="login-popup" class="modal">
+      <div class="modal-content">
+        <h2>Opgepast 🚨</h2>
+        <p>Gebruiker nog niet ingelogd. Log in of registreer om toegang te krijgen tot dit project.</p>
+        <div class="modal-actions">
+          <button id="close-popup" class="btn btn-outline">Sluiten</button>
+          <a href="/login" class="btn btn-primary">Naar Login</a>
+          <button id="next-popup" class="btn btn-outline">Toch verder gaan</button>
+        </div>
+      </div>
+    </dialog>
+
+    <div id="unavailableModal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Nog niet beschikbaar</h2>
+        <p>Je hebt helaas (nog) geen toegang tot dit project. Je kunt momenteel alleen GameHub bekijken.</p>
+        <button class="btn btn-primary" onclick="closePopup()">Begrepen</button>
+      </div>
+    </div>
+
+    <script>
+      const popup = document.getElementById("login-popup");
+      const openBtn = document.getElementById("gamehub-btn");
+      const closeBtn = document.getElementById("close-popup");
+      const nextBtn = document.getElementById("next-popup");
+
+      openBtn.addEventListener("click", function (event) {
+        event.preventDefault(); popup.showModal(); 
+      });
+      closeBtn.addEventListener("click", function () { popup.close(); });
+      nextBtn.addEventListener("click", function () { window.location.href = "/search"; });
+    </script>
+    <%- include('partials/footer') %>
+    <script src="/js/main.js"></script>
+  </body>
+</html>
+intro.ejs
+<!doctype html>
+<html lang="nl">
+  <%- include('partials/head', { title: 'Team3Labs - Introductie', customCss: 'intro.css' }) %>
+  <body>
+    <%- include('partials/header', { activePage: 'intro' }) %>
+
+    <main class="content-wrapper">
+      <div class="instructions-container">
+        <h1 class="page-title">Welkom bij Team3Labs</h1>
+        <p class="page-subtitle">Hier vind je een korte handleiding over het gebruik van onze applicaties.</p>
+
+        <section class="instruction-step">
+          <div class="step-number">1</div>
+          <div class="step-text">
+            <h2>Maak een account aan</h2>
+            <p>Om volledige toegang te krijgen tot alle functies, raden we je aan om eerst te <a href="/register" class="text-link">registreren</a> en in te loggen.</p>
+          </div>
+        </section>
+
+        <section class="instruction-step">
+          <div class="step-number">2</div>
+          <div class="step-text">
+            <h2>Kies je project</h2>
+            <p>Ga naar de <a href="/" class="text-link">Projecten</a> pagina. Hier zie je al onze actieve applicaties. Momenteel kun je aan de slag met GameHub om de RAWG database te doorzoeken.</p>
+          </div>
+        </section>
+
+        <section class="instruction-step">
+          <div class="step-number">3</div>
+          <div class="step-text">
+            <h2>Gebruik GameHub</h2>
+            <p>In de GameHub kun je zoeken op titels van videogames, filteren op genre en de nieuwste releases bekijken. Klik op een game voor meer details.</p>
+          </div>
+        </section>
+        
+        <div class="action-box">
+          <p>Klaar om te beginnen?</p>
+          <a href="/" class="btn btn-primary">Ga naar Projecten</a>
+        </div>
+      </div>
+    </main>
+    <%- include('partials/footer') %>
+  </body>
+</html>

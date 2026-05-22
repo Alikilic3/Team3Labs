@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="nl">
+  <%- include('partials/head', { title: 'Team3Labs - Login', customCss: 'login.css' }) %>
+  <body>
+    <%- include('partials/header', { activePage: 'login' }) %>
+
+    <main class="content-wrapper auth-page">
+      <div class="auth-card">
+        <h1 class="page-title">Welkom terug</h1>
+        <p class="page-subtitle">Log in op je team3Labs account</p>
+        <p id="errorMsg" style="color: red; display: none;"></p>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">E-mailadres:</label>
+            <input type="email" id="email" name="email" placeholder="naam@email.com" required />
+            <label for="password">Wachtwoord:</label>
+            <input type="password" id="password" name="password" placeholder="Vul je wachtwoord in" required />
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Inloggen</button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Nog geen account? <a href="/register" class="text-link">Registreer hier</a></p>
+        </div>
+      </div>
+    </main>
+    <%- include('partials/footer') %>
+    <script src="/js/login.js"></script>
+  </body>
+</html>

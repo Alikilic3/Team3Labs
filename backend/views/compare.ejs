@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="nl">
+  <%- include('partials/head', { title: 'Vergelijken - Team3Labs', useBootstrapIcons: true, customCss: ['main.css', 'compare.css'] }) %>
+<body>
+  <%- include('partials/header-app', { activePage: 'compare' }) %>
+
+  <main class="content-wrapper app-content">
+    <section class="compare-intro">
+      <h1 class="page-title">Games Vergelijken</h1>
+      <p>Kies twee games om hun statistieken zij-aan-zij te vergelijken.</p>
+    </section>
+
+    <section class="compare-search-area">
+      <div class="search-box-container">
+        <input type="text" id="searchInput1" class="search-input" placeholder="Game 1 (bijv. GTA V)..." autocomplete="off" />
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="search-box-container">
+        <input type="text" id="searchInput2" class="search-input" placeholder="Game 2 (bijv. RDR 2)..." autocomplete="off" />
+      </div>
+      <button id="compareBtn" class="btn btn-primary compare-btn">Vergelijk</button>
+    </section>
+
+    <section class="results-section">
+      <div class="compare-results-area" id="compareResults" aria-live="polite"></div>
+    </section>
+  </main>
+  <%- include('partials/footer') %>
+  <script src="/js/comparePage.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

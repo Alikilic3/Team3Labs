@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="nl">
+  <%- include('partials/head', { title: 'Zoeken - GameHub', useBootstrapIcons: true, customCss: 'search.css' }) %>
+<body>
+  <%- include('partials/header-app', { activePage: 'search' }) %>
+
+  <main class="content-wrapper app-content">
+    <section class="search-section">
+      <h1 class="page-title">Ontdek nieuwe games!</h1>
+      <div class="search-modes">
+        <button id="favoritesViewBtn" class="mode-btn active">Mijn favoriete games</button>
+        <button id="searchViewBtn" class="mode-btn">Zoek nieuwe games</button>
+      </div>
+      <div class="search-box-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Zoek een game via de RAWG database..." autocomplete="off" />
+        <button id="searchBtn" class="btn btn-primary search-btn">Zoeken</button>
+        <ul class="autocomplete-results" style="display: none"></ul>
+      </div>
+    </section>
+
+    <section class="results-section">
+      <h2>Zoekresultaten</h2>
+      <div class="games-grid" id="gamesGrid"></div>
+    </section>
+    
+    <div id="gameModal" class="game-modal hidden">
+      <div class="game-modal-content">
+        <button id="closeModal" class="close-modal">&times;</button>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+  </main>
+  <%- include('partials/footer') %>
+  <script type="module" src="/js/search.js"></script>
+</body>
+</html>

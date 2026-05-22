@@ -1,0 +1,49 @@
+<header class="main-header">
+  <a href="/" class="logo">Team3Labs</a>
+
+  <nav class="main-nav">
+    <ul>
+      <li><a href="/" class="<%= activePage === 'index' ? 'active' : '' %>">Projecten</a></li>
+      <li><a href="/intro" class="<%= activePage === 'intro' ? 'active' : '' %>">Introductie</a></li>
+    </ul>
+  </nav>
+
+  <div class="auth-buttons">
+    <a href="/login" class="btn btn-outline <%= activePage === 'login' ? 'active' : '' %>">Login</a>
+    <a href="/register" class="btn btn-primary <%= activePage === 'register' ? 'active' : '' %>">Registreren</a>
+  </div>
+</header>
+
+collection.ejs
+<!doctype html>
+<html lang="nl">
+  <%- include('partials/head', { title: 'Mijn Collectie - Team3Labs', useBootstrapIcons: true, customCss: ['main.css', 'collection.css'] }) %>
+<body>
+  <%- include('partials/header-app', { activePage: 'collection' }) %>
+
+  <main class="content-wrapper app-content">
+    <section class="collection-hero">
+      <h1 class="page-title">Mijn Collectie</h1>
+      <p class="page-subtitle">Bekijk, sorteer en beheer hier je opgeslagen games.</p>
+    </section>
+
+    <section class="collection-toolbar">
+      <div class="toolbar-left">
+        <label for="sort" class="toolbar-label">Sorteren op</label>
+        <select id="sort" class="toolbar-select">
+          <option value="rating">Rating (Hoog - Laag)</option>
+          <option value="name">Naam (A - Z)</option>
+          <option value="release">Release date</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="results-section">
+      <div class="games-grid" id="gamesGrid" aria-live="polite"></div>
+    </section>
+  </main>
+  <%- include('partials/footer') %>
+  <script src="/js/main.js"></script>
+  <script src="/js/collectionPage.js"></script>
+</body>
+</html>
