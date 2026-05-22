@@ -1,12 +1,11 @@
 {
   "name": "team3labs",
   "version": "1.0.0",
-  "description": "dit is een testt voor branch\r => HOE WERKEN MET BRANCH",
-  "main": "index.js",
+  "description": "GameHub - Team3Labs project",
+  "main": "js/server.js",
   "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "start": "nodemon src/server.ts"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Alikilic3/Team3Labs.git"
@@ -21,13 +20,15 @@
   "homepage": "https://github.com/Alikilic3/Team3Labs#readme",
   "dependencies": {
     "dotenv": "^17.4.2",
+    "ejs": "^3.1.10",
     "express": "^5.2.1",
-    "mongodb": "^7.2.0",
-    "undici-types": "^8.2.0"
+    "mongodb": "^7.2.0"
   },
   "devDependencies": {
+    "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.6",
     "@types/node": "^25.6.0",
+    "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }

@@ -1,9 +1,4 @@
 // =========================
-// Variabelen
-// =========================
-const API_KEY = "b905995aec7348d6b85e65a0731fffd1"; // Jouw test-key
-
-// =========================
 // DOM elementen
 // =========================
 const searchInput1 = document.getElementById("searchInput1");
@@ -32,16 +27,13 @@ function getPlatformIcons(parentPlatforms) {
 }
 
 // =========================
-// Data ophalen voor 1 game
+// Data ophalen voor 1 game via onze eigen server
+// De server stuurt dit door naar RAWG (met de geheime API key)
 // =========================
 async function fetchTopGame(query) {
-  const res = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&search=${query}&page_size=1`);
+  const res = await fetch(`/api/compare?q=${encodeURIComponent(query)}`);
   const data = await res.json();
-  
-  if (data.results && data.results.length > 0) {
-    return data.results[0];
-  }
-  return null;
+  return data;
 }
 
 // =========================
@@ -94,17 +86,14 @@ function renderComparison(game1, game2) {
               <span class="stat-label"><i class="bi bi-star-fill text-warning"></i> Score</span>
               <span class="stat-value" style="color: ${g1RatingColor}; font-weight: 900;">${game1.rating}</span>
             </div>
-            
             <div class="stat-row">
               <span class="stat-label"><i class="bi bi-controller"></i> Platforms</span>
               <span class="stat-value platform-icons">${getPlatformIcons(game1.parent_platforms)}</span>
             </div>
-            
             <div class="stat-row">
               <span class="stat-label"><i class="bi bi-clock-history"></i> Speeltijd</span>
               <span class="stat-value">${game1.playtime} uur</span>
             </div>
-            
             <div class="stat-row">
               <span class="stat-label"><i class="bi bi-calendar-event"></i> Release</span>
               <span class="stat-value">${game1.released || 'Onbekend'}</span>
@@ -123,17 +112,14 @@ function renderComparison(game1, game2) {
               <span class="stat-label"><i class="bi bi-star-fill text-warning"></i> Score</span>
               <span class="stat-value" style="color: ${g2RatingColor}; font-weight: 900;">${game2.rating}</span>
             </div>
-            
             <div class="stat-row">
               <span class="stat-label"><i class="bi bi-controller"></i> Platforms</span>
               <span class="stat-value platform-icons">${getPlatformIcons(game2.parent_platforms)}</span>
             </div>
-            
             <div class="stat-row">
               <span class="stat-label"><i class="bi bi-clock-history"></i> Speeltijd</span>
               <span class="stat-value">${game2.playtime} uur</span>
             </div>
-            
             <div class="stat-row">
               <span class="stat-label"><i class="bi bi-calendar-event"></i> Release</span>
               <span class="stat-value">${game2.released || 'Onbekend'}</span>
