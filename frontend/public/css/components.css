@@ -377,3 +377,11 @@
     gap: 1rem;
     justify-content: center;
 }
+/* Rode foutmelding onder een veld */
+.field-error {
+    color: #f44336;
+    font-size: 0.85rem;
+    margin-top: 4px;
+    display: block;
+    min-height: 18px;
+}

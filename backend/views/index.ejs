@@ -1,38 +1,38 @@
 <!doctype html>
 <html lang="nl">
-<%- include('partials/head', { title: 'Team3Labs - Projecten', extraCss: 'main.css' }) %>
+<%- include('partials/head', { title: 'Team3Labs - Dashboard', extraCss: 'main.css' }) %>
 <body>
 <%- include('partials/header', { activePage: 'index' }) %>
 
 <main class="content-wrapper">
-    <h1 class="page-title">Kies een app</h1>
-    <p class="page-subtitle">Selecteer hieronder de app dat je wilt bekijken.</p>
+    <h1 class="page-title">Jouw Dashboard</h1>
+    <p class="page-subtitle">Kies een van de onderstaande modules om verder te gaan.</p>
 
     <div class="projects-container">
         <section class="project-card">
-            <img src="/assets/images/Gamehub.jpeg" alt="GameHub Project">
+            <img src="/assets/images/Gamehub.jpeg" alt="GameHub Module">
             <div class="project-content">
                 <h2>GameHub</h2>
                 <p>Ontdek, beheer en vergelijk videogames via de RAWG database.</p>
-                <a href="#" id="gamehub-btn" class="btn btn-primary btn-full">Kies GameHub</a>
+                <a href="#" id="gamehub-btn" class="btn btn-primary btn-full">Open GameHub</a>
             </div>
         </section>
 
         <section class="project-card">
             <img src="/assets/images/legomaster.jpg" alt="LegoMasters">
             <div class="project-content">
-                <h2>LegoMasters (Gesloten)</h2>
-                <p>Dit is een ander groepsproject. Je hebt hier momenteel geen toegang toe.</p>
-                <button class="btn btn-outline btn-full" onclick="openPopup()">Bekijk LegoMasters</button>
+                <h2>LegoMasters (Beperkte toegang)</h2>
+                <p>Dit platformonderdeel is momenteel afgeschermd. Je hebt hier nog geen toegang toe.</p>
+                <button class="btn btn-outline btn-full" onclick="openPopup()">Open LegoMasters</button>
             </div>
         </section>
 
         <section class="project-card">
             <img src="/assets/images/Music1.png" alt="MusicMatch">
             <div class="project-content">
-                <h2>MusicMatch (Gesloten)</h2>
-                <p>Dit is een ander groepsproject. Je hebt hier momenteel geen toegang toe.</p>
-                <button class="btn btn-outline btn-full" onclick="openPopup()">Bekijk MusicMatch</button>
+                <h2>MusicMatch (Beperkte toegang)</h2>
+                <p>Dit platformonderdeel is momenteel afgeschermd. Je hebt hier nog geen toegang toe.</p>
+                <button class="btn btn-outline btn-full" onclick="openPopup()">Open MusicMatch</button>
             </div>
         </section>
     </div>
@@ -40,8 +40,8 @@
 
 <dialog id="login-popup" class="modal">
     <div class="modal-content">
-        <h2>Opgepast 🚨</h2>
-        <p>Gebruiker is nog niet ingelogd. Log in of registreer om toegang te krijgen tot deze app.</p>
+        <h2>Opgepast !!!</h2>
+        <p>Je bent nog niet ingelogd. Log in of registreer om toegang te krijgen tot deze functionaliteit.</p>
         <div class="modal-actions">
             <button id="close-popup" class="btn btn-outline">Sluiten</button>
             <a href="/login" class="btn btn-primary">Naar Login</a>
@@ -52,7 +52,7 @@
 <div id="unavailableModal" class="modal-overlay">
     <div class="modal-content">
         <h2>Nog niet beschikbaar</h2>
-        <p>Je hebt helaas (nog) geen toegang tot deze app. Je kunt momenteel alleen GameHub bekijken.</p>
+        <p>Je hebt helaas (nog) geen rechten voor deze module. Je kunt momenteel alleen de GameHub gebruiken.</p>
         <button class="btn btn-primary" onclick="closePopup()">Begrepen</button>
     </div>
 </div>
@@ -73,4 +73,6 @@
 
 <script src="/js/main.js"></script>
 
-<%- include('partials/footer') %>
+
+</body>
+</html>

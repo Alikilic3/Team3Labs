@@ -7,7 +7,9 @@ body {
     flex-direction: column;
 }
 
-/* Header Layout */
+/* ===========================
+   Header Layout
+   =========================== */
 .main-header {
     display: flex;
     justify-content: space-between;
@@ -15,14 +17,13 @@ body {
     padding: var(--spacing-md) var(--spacing-lg);
     background-color: var(--bg-card);
     border-bottom: 1px solid var(--border-color);
-    position: relative; /* Nodig zodat het mobiele menu hieronder kan 'hangen' */
+    position: relative;
 }
 
-/* Groeperen van elementen links en rechts in de header */
 .header-left {
     display: flex;
     align-items: center;
-    gap: 30px; /* Ruimte tussen logo en navigatie */
+    gap: 30px;
 }
 
 .header-right {
@@ -46,9 +47,9 @@ body {
     color: var(--primary-color);
 }
 
-/* --- Hamburger Knop (Standaard verborgen op PC) --- */
+/* Hamburger knop (verborgen op PC) */
 .hamburger {
-    display: none; 
+    display: none;
     flex-direction: column;
     gap: 5px;
     background: transparent;
@@ -65,7 +66,9 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Main Content Layout */
+/* ===========================
+   Main Content Layout
+   =========================== */
 .content-wrapper {
     flex: 1;
     padding: 3rem var(--spacing-lg);
@@ -75,18 +78,92 @@ body {
     text-align: center;
 }
 
-/* ==============================================
-   Responsive Layout (Alleen voor mobiel/tablets) 
-   ============================================== */
+/* ===========================
+   Footer Layout
+   =========================== */
+.main-footer {
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    padding: var(--spacing-lg) var(--spacing-lg);
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: start;
+    gap: var(--spacing-lg);
+}
+
+/* Logo & tagline */
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.footer-logo {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.footer-tagline {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* Navigatie links */
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+
+.footer-links a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Team info */
+.footer-team {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: flex-end;
+    text-align: right;
+}
+
+.footer-team p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.footer-copy {
+    font-size: 0.78rem;
+    color: var(--disabled-text);
+}
+
+/* ===========================
+   Responsive
+   =========================== */
 @media (max-width: 768px) {
     .hamburger {
-        display: flex; 
+        display: flex;
     }
 
     .main-nav {
-        display: none; /* Standaard onzichtbaar */
+        display: none;
         position: absolute;
-        top: 100%; 
+        top: 100%;
         left: 0;
         width: 100%;
         background-color: var(--bg-card);
@@ -96,7 +173,6 @@ body {
         box-shadow: 0 4px 6px rgba(0,0,0,0.5);
     }
 
-    /* Class wordt toegevoegd door main.js */
     .main-nav.show-menu {
         display: block;
     }
@@ -107,20 +183,34 @@ body {
         gap: var(--spacing-md);
     }
 
-    /* Verberg op kleine schermen lange teksten of pas de gap aan */
     .badge-label {
         display: none;
     }
-    
+
     .header-left {
         justify-content: space-between;
-        width: 100%; /* Zorgt dat logo links staat en knop rechts (als header-right onderaan valt) */
+        width: 100%;
     }
-    
-    /* Maak de totale header een column als het echt krap wordt, 
-       maar hou de top-bar met logo en knop intact */
+
     .main-header {
         flex-wrap: wrap;
         gap: 15px;
+    }
+
+    /* Footer wordt 1 kolom op mobiel */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-team {
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }

@@ -18,21 +18,30 @@
         </nav>
     </div>
 
-    <div class="header-right auth-buttons">
+    <div class="header-right">
+        <!-- Huidige game badge -->
         <div class="current-game-badge">
-    <span class="badge-label">Huidige Game:</span>
-    <span class="badge-title" id="headerCurrentGame">
-        <% if (user.currentGame) { %>
-            <%= user.currentGame.name %>
-        <% } else { %>
-            Geen gekozen
-        <% } %>
-    </span>
-</div>
+            <span class="badge-label">Huidige Game:</span>
+            <span class="badge-title" id="headerCurrentGame">
+                <% if (user.currentGame) { %>
+                    <%= user.currentGame.name %>
+                <% } else { %>
+                    Geen gekozen
+                <% } %>
+            </span>
+        </div>
+
+        <!-- Avatar: eerste letter van elk woord, max 2 letters -->
         <div class="user-menu">
-            <span class="user-avatar"><%= user.name.substring(0, 2).toUpperCase() %></span>
+            <%
+                const words = user.name.trim().split(" ");
+                const avatar = words.length === 1
+                    ? words[0].charAt(0).toUpperCase()
+                    : (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
+            %>
+            <span class="user-avatar" title="<%= user.name %>"><%= avatar %></span>
             <form action="/logout" method="POST" style="display:inline">
-            <button type="submit" class="btn btn-outline btn-small">Uitloggen</button>
+                <button type="submit" class="btn btn-outline btn-small">Uitloggen</button>
             </form>
         </div>
     </div>
