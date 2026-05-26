@@ -8,41 +8,39 @@ const modalBody = document.getElementById("modalBody");
 const closeModal = document.getElementById("closeModal");
 let currentGames = [];
 let searchTimeout;
+
 // ===========================
 // Gebruiker ophalen
 // ===========================
 function getUserId() {
-    return localStorage.getItem("userId") || "";
+    return SESSION_USER_ID || "";
 }
+
 // ===========================
 // Favorieten via API
 // ===========================
 async function getFavorites() {
     const userId = getUserId();
-    if (!userId)
-        return [];
+    if (!userId) return [];
     const response = await fetch(`/api/favorites/${userId}`);
     const data = await response.json();
     return data.map((f) => f.game);
 }
+
 async function isFavorite(gameId) {
     const favorites = await getFavorites();
     return favorites.some((game) => game.id === gameId);
 }
+
 async function toggleFavorite(gameId) {
     const userId = getUserId();
-    if (!userId)
-        return;
+    if (!userId) return;
     const favorite = await isFavorite(gameId);
     if (favorite) {
-        await fetch(`/api/favorites/${userId}/${gameId}`, {
-            method: "DELETE"
-        });
-    }
-    else {
+        await fetch(`/api/favorites/${userId}/${gameId}`, { method: "DELETE" });
+    } else {
         const gameToAdd = currentGames.find((game) => game.id === gameId);
-        if (!gameToAdd)
-            return;
+        if (!gameToAdd) return;
         await fetch("/api/favorites", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -51,11 +49,11 @@ async function toggleFavorite(gameId) {
     }
     if (favoritesViewBtn.classList.contains("active")) {
         renderFavorites();
-    }
-    else {
+    } else {
         renderGames(currentGames);
     }
 }
+
 // ===========================
 // Games renderen
 // ===========================
@@ -114,15 +112,22 @@ async function renderGames(games) {
                         </div>
                     </div>
 
-                    <button class="add-btn">
-                        <i class="bi bi-plus-lg"></i>
-                        Toevoegen aan collectie
-                    </button>
+                    <div class="game-card-actions">
+                        <button class="add-btn">
+                            <i class="bi bi-plus-lg"></i>
+                            Toevoegen aan collectie
+                        </button>
+                        <button class="current-game-btn" data-game-id="${game.id}">
+                            <i class="bi bi-controller"></i>
+                            Stel in als huidige game
+                        </button>
+                    </div>
                 </div>
             </article>
         `;
     }
 }
+
 async function renderFavorites() {
     favoritesViewBtn.classList.add("active");
     searchViewBtn.classList.remove("active");
@@ -132,6 +137,7 @@ async function renderFavorites() {
         gamesGrid.innerHTML = "<p>Je hebt nog geen favoriete games.</p>";
     }
 }
+
 // ===========================
 // Games zoeken via backend proxy
 // ===========================
@@ -145,36 +151,31 @@ async function searchGames() {
         favoritesViewBtn.classList.remove("active");
         searchViewBtn.classList.add("active");
         const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-        if (!response.ok)
-            throw new Error(response.statusText);
+        if (!response.ok) throw new Error(response.statusText);
         const data = await response.json();
         await renderGames(data.results);
-    }
-    catch (error) {
+    } catch (error) {
         gamesGrid.innerHTML = "<p>Er ging iets fout bij het ophalen van games.</p>";
         console.log(error);
     }
 }
+
 function getPlatformIcons(name) {
     const lower = name.toLowerCase();
-    if (lower.includes("pc"))
-        return `<i class="bi bi-windows"></i>`;
-    if (lower.includes("playstation"))
-        return `<i class="bi bi-playstation"></i>`;
-    if (lower.includes("xbox"))
-        return `<i class="bi bi-xbox"></i>`;
-    if (lower.includes("nintendo"))
-        return `<i class="bi bi-nintendo-switch"></i>`;
+    if (lower.includes("pc")) return `<i class="bi bi-windows"></i>`;
+    if (lower.includes("playstation")) return `<i class="bi bi-playstation"></i>`;
+    if (lower.includes("xbox")) return `<i class="bi bi-xbox"></i>`;
+    if (lower.includes("nintendo")) return `<i class="bi bi-nintendo-switch"></i>`;
     return `<i class="bi bi-controller"></i>`;
 }
+
 // ===========================
 // Game modal via backend proxy
 // ===========================
 async function openGameModal(gameId) {
     try {
         const response = await fetch(`/api/games/${gameId}`);
-        if (!response.ok)
-            throw new Error(response.statusText);
+        if (!response.ok) throw new Error(response.statusText);
         const game = await response.json();
         const image = game.background_image
             ? game.background_image
@@ -187,76 +188,97 @@ async function openGameModal(gameId) {
             <img class="modal-image" src="${image}" alt="${game.name}">
             <h2 class="modal-title">${game.name}</h2>
             <p class="modal-description">${description}</p>
-
             <div class="modal-meta">
                 <p><strong>Release:</strong> ${released}</p>
                 <p><strong>Score:</strong> ${game.rating}</p>
                 <p><strong>Metacritic:</strong> ${game.metacritic ?? "Geen score"}</p>
                 <p><strong>Speeltijd:</strong> ${game.playtime} uur</p>
             </div>
-
             <button class="add-btn">
                 <i class="bi bi-plus-lg"></i>
                 Toevoegen aan collectie
             </button>
         `;
         gameModal.classList.remove("hidden");
-    }
-    catch (error) {
+    } catch (error) {
         console.log(error);
     }
 }
+
 // ===========================
 // Event listeners
 // ===========================
 gamesGrid.addEventListener("click", async (event) => {
     const target = event.target;
+
+    // Favoriet knop
     const favoriteBtn = target.closest(".favorite-btn");
     if (favoriteBtn) {
         const gameId = favoriteBtn.getAttribute("data-favorite-id");
-        if (gameId)
-            await toggleFavorite(Number(gameId));
+        if (gameId) await toggleFavorite(Number(gameId));
         return;
     }
+
+    // Huidige game knop
+    const currentGameBtn = target.closest(".current-game-btn");
+    if (currentGameBtn) {
+        const gameId = Number(currentGameBtn.getAttribute("data-game-id"));
+        const game = currentGames.find(g => g.id === gameId);
+        if (!game) return;
+        await fetch("/api/current-game", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ game })
+        });
+        alert(`${game.name} is ingesteld als huidige game!`);
+        window.location.reload();
+        return;
+    }
+
+    // Game modal openen
     const image = target.closest(".game-card-image");
     if (image) {
         const gameId = image.getAttribute("data-id");
-        if (gameId)
-            await openGameModal(Number(gameId));
+        if (gameId) await openGameModal(Number(gameId));
     }
 });
+
 closeModal.addEventListener("click", () => {
     gameModal.classList.add("hidden");
 });
+
 gameModal.addEventListener("click", (event) => {
     if (event.target === gameModal) {
         gameModal.classList.add("hidden");
     }
 });
+
 searchBtn.addEventListener("click", searchGames);
+
 searchInput.addEventListener("input", () => {
     clearTimeout(searchTimeout);
     searchTimeout = window.setTimeout(() => {
         if (searchInput.value.trim() === "") {
             renderFavorites();
-        }
-        else {
+        } else {
             searchGames();
         }
     }, 400);
 });
+
 favoritesViewBtn.addEventListener("click", () => {
     searchInput.value = "";
     renderFavorites();
 });
+
 searchViewBtn.addEventListener("click", () => {
     favoritesViewBtn.classList.remove("active");
     searchViewBtn.classList.add("active");
     if (searchInput.value.trim() !== "") {
         searchGames();
-    }
-    else {
+    } else {
         gamesGrid.innerHTML = "<p>Typ in de zoekbalk om games te zoeken.</p>";
     }
 });
+
 renderFavorites();

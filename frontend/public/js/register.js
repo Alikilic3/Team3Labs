@@ -24,7 +24,7 @@ if (registerForm) {
                 registerErrorMsg.style.display = "block";
                 return;
             }
-            window.location.href = "login.html";
+            window.location.href = "/login";
         }
         catch (e) {
             registerErrorMsg.textContent = "Er ging iets fout, probeer opnieuw.";

@@ -246,3 +246,38 @@
   background: #a855f7;
   border-color: #a855f7;
 }
+
+
+
+.game-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 1.5rem;
+}
+
+.current-game-btn {
+    margin-top: 0;
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #a855f7, #9333ea);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.current-game-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+}
+
+.game-card-actions .add-btn {
+    margin-top: 0;
+}

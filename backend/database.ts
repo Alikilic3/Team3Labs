@@ -1,12 +1,13 @@
-import { Collection, MongoClient } from "mongodb";
+import { Collection, MongoClient, ObjectId } from "mongodb";
 import dotenv from "dotenv";
-import { User, Favorite } from "./types";
-
+import { User, Favorite, Game } from "./types";
+import bcrypt from "bcrypt";
 dotenv.config();
 
 // ===========================
 // Connectie
 // ===========================
+const saltRounds = 10;
 const uri = process.env.MONGODB_URI!;
 export const client = new MongoClient(uri);
 
@@ -50,8 +51,9 @@ export async function getUserByEmail(email: string) {
     return await usersCollection.findOne({ email });
 }
 
-export async function createUser(name: string, email: string, passwordHash: string) {
-    const newUser: User = { name, email, passwordHash, xp: 0 };
+export async function createUser(name: string, email: string, password: string) {
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const newUser: User = { name, email, passwordHash: hashedPassword, xp: 0 };
     return await usersCollection.insertOne(newUser);
 }
 
@@ -73,4 +75,26 @@ export async function removeFavorite(userId: string, gameId: number) {
 export async function isFavorite(userId: string, gameId: number) {
     const result = await favoritesCollection.findOne({ userId, "game.id": gameId });
     return result !== null;
+}
+
+export async function login(email: string, password: string) {
+    if (email === "" || password === "") {
+        throw new Error("Email en wachtwoord zijn verplicht");
+    }
+    const user = await usersCollection.findOne({ email });
+    if (!user) {
+        throw new Error("Gebruiker niet gevonden");
+    }
+    const isCorrect = await bcrypt.compare(password, user.passwordHash!);
+    if (!isCorrect) {
+        throw new Error("Wachtwoord incorrect");
+    }
+    return user;
+}
+
+export async function setCurrentGame(userId: string, game: Game | null) {
+    return await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $set: { currentGame: game } }
+    );
 }

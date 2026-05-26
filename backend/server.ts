@@ -1,7 +1,8 @@
-import express from "express";
+import { connect, getUserByEmail, createUser, login, getFavoritesByUserId, addFavorite, removeFavorite, isFavorite, setCurrentGame } from "./database";import express from "express";
 import dotenv from "dotenv";
 import path from "path";
-import { connect, getUserByEmail, createUser, getFavoritesByUserId, addFavorite, removeFavorite, isFavorite } from "./database";
+import sessionMiddleware from "./session";
+import { secureMiddleware } from "./secureMiddleware";
 
 dotenv.config();
 
@@ -16,9 +17,8 @@ const RAWG_BASE_URL = "https://api.rawg.io/api";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../frontend/public")));
-app.use("/assets", express.static(path.join(__dirname, "../assets")));
-app.use("/css", express.static(path.join(__dirname, "../css")));
-app.use("/js", express.static(path.join(__dirname, "../js")));
+app.use(sessionMiddleware);
+
 
 // ===========================
 // EJS instellen
@@ -45,19 +45,22 @@ app.get("/register", (req, res) => {
     res.render("register", { activePage: "register" });
 });
 
-app.get("/search", (req, res) => {
-    res.render("search", { activePage: "search" });
+app.get("/search", secureMiddleware, (req, res) => {
+    res.render("search", { 
+        activePage: "search",
+        userId: req.session.user!._id!.toString()
+    });
 });
 
-app.get("/collection", (req, res) => {
+app.get("/collection", secureMiddleware, (req, res) => {
     res.render("collection", { activePage: "collection" });
 });
 
-app.get("/compare", (req, res) => {
+app.get("/compare", secureMiddleware, (req, res) => {
     res.render("compare", { activePage: "compare" });
 });
 
-app.get("/guess", (req, res) => {
+app.get("/guess", secureMiddleware, (req, res) => {
     res.render("guess", { activePage: "guess" });
 });
 
@@ -65,23 +68,22 @@ app.get("/guess", (req, res) => {
 // Logout
 // ===========================
 app.post("/logout", (req, res) => {
-    res.redirect("/");
+    req.session.destroy(() => {
+        res.redirect("/");
+    });
 });
-
 // ===========================
 // API: Login
 // ===========================
 app.post("/api/login", async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await getUserByEmail(email);
-        if (!user || user.passwordHash !== password) {
-            res.status(401).json({ error: "Fout email of wachtwoord" });
-            return;
-        }
+        const user = await login(email, password);
+        delete user.passwordHash;
+        req.session.user = user;
         res.json({ message: "Ingelogd!", userId: user._id, name: user.name, xp: user.xp });
-    } catch (e) {
-        res.status(500).json({ error: "Serverfout" });
+    } catch (e: any) {
+        res.status(401).json({ error: e.message });
     }
 });
 
@@ -190,4 +192,18 @@ app.get("/api/compare", async (req, res) => {
 app.listen(PORT, async () => {
     await connect();
     console.log(`Server draait op http://localhost:${PORT}`);
+});
+// ===========================
+// API: Huidige game instellen
+// ===========================
+app.put("/api/current-game", secureMiddleware, async (req, res) => {
+    try {
+        const { game } = req.body;
+        const userId = req.session.user!._id!.toString();
+        await setCurrentGame(userId, game);
+        req.session.user!.currentGame = game;
+        res.json({ message: "Huidige game ingesteld!" });
+    } catch (e) {
+        res.status(500).json({ error: "Serverfout" });
+    }
 });

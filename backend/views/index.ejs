@@ -5,8 +5,8 @@
 <%- include('partials/header', { activePage: 'index' }) %>
 
 <main class="content-wrapper">
-    <h1 class="page-title">Kies een project</h1>
-    <p class="page-subtitle">Selecteer hieronder het project dat je wilt bekijken.</p>
+    <h1 class="page-title">Kies een app</h1>
+    <p class="page-subtitle">Selecteer hieronder de app dat je wilt bekijken.</p>
 
     <div class="projects-container">
         <section class="project-card">
@@ -41,11 +41,10 @@
 <dialog id="login-popup" class="modal">
     <div class="modal-content">
         <h2>Opgepast 🚨</h2>
-        <p>Gebruiker nog niet ingelogd. Log in of registreer om toegang te krijgen tot dit project.</p>
+        <p>Gebruiker is nog niet ingelogd. Log in of registreer om toegang te krijgen tot deze app.</p>
         <div class="modal-actions">
             <button id="close-popup" class="btn btn-outline">Sluiten</button>
             <a href="/login" class="btn btn-primary">Naar Login</a>
-            <button id="next-popup" class="btn btn-outline">Toch verder gaan</button>
         </div>
     </div>
 </dialog>
@@ -53,7 +52,7 @@
 <div id="unavailableModal" class="modal-overlay">
     <div class="modal-content">
         <h2>Nog niet beschikbaar</h2>
-        <p>Je hebt helaas (nog) geen toegang tot dit project. Je kunt momenteel alleen GameHub bekijken.</p>
+        <p>Je hebt helaas (nog) geen toegang tot deze app. Je kunt momenteel alleen GameHub bekijken.</p>
         <button class="btn btn-primary" onclick="closePopup()">Begrepen</button>
     </div>
 </div>
@@ -62,14 +61,14 @@
     const popup = document.getElementById("login-popup");
     const openBtn = document.getElementById("gamehub-btn");
     const closeBtn = document.getElementById("close-popup");
-    const nextBtn = document.getElementById("next-popup");
 
     openBtn.addEventListener("click", function(event) {
         event.preventDefault();
         popup.showModal();
     });
-    closeBtn.addEventListener("click", function() { popup.close(); });
-    nextBtn.addEventListener("click", function() { window.location.href = "/search"; });
+    closeBtn.addEventListener("click", function() { 
+        popup.close(); 
+    });
 </script>
 
 <script src="/js/main.js"></script>

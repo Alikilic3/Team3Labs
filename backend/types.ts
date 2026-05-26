@@ -11,6 +11,7 @@ export interface User {
     email: string;
     passwordHash: string;
     xp: number;
+    currentGame?: Game | null;
 }
 
 // Stelt een favoriet spel voor in de database
