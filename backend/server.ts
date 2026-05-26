@@ -1,9 +1,9 @@
-import { connect, getUserByEmail, createUser, login, getFavoritesByUserId, addFavorite, removeFavorite, isFavorite, setCurrentGame } from "./database";import express from "express";
+import express from "express";
+import { connect, getUserByEmail, createUser, login, getFavoritesByUserId, addFavorite, removeFavorite, isFavorite, setCurrentGame, getCollection, addToCollection, removeFromCollection, updateCollectionStatus } from "./database";
 import dotenv from "dotenv";
 import path from "path";
 import sessionMiddleware from "./session";
 import { secureMiddleware } from "./secureMiddleware";
-
 dotenv.config();
 
 const app = express();
@@ -46,16 +46,21 @@ app.get("/register", (req, res) => {
 });
 
 app.get("/search", secureMiddleware, (req, res) => {
+    console.log("currentGame:", req.session.user!.currentGame);
+    console.log("currentGameId:", req.session.user!.currentGame?.id);
     res.render("search", { 
         activePage: "search",
-        userId: req.session.user!._id!.toString()
+        userId: req.session.user!._id!.toString(),
+        currentGameId: req.session.user!.currentGame?.id || null
     });
 });
 
 app.get("/collection", secureMiddleware, (req, res) => {
-    res.render("collection", { activePage: "collection" });
+    res.render("collection", { 
+        activePage: "collection",
+        userId: req.session.user!._id!.toString()
+    });
 });
-
 app.get("/compare", secureMiddleware, (req, res) => {
     res.render("compare", { activePage: "compare" });
 });
@@ -186,6 +191,72 @@ app.get("/api/compare", async (req, res) => {
     }
 });
 
+// Best of the year
+app.get("/api/best-of-year", async (req, res) => {
+    try {
+        const year = new Date().getFullYear();
+        const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&dates=${year}-01-01,${year}-12-31&ordering=-rating&page_size=20`);
+        const data = await response.json();
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "Fout bij ophalen" });
+    }
+});
+
+// Popular in 2025
+app.get("/api/popular-2025", async (req, res) => {
+    try {
+        const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&dates=2025-01-01,2025-12-31&ordering=-added&page_size=20`);
+        const data = await response.json();
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "Fout bij ophalen" });
+    }
+});
+
+// All time top
+app.get("/api/all-time-top", async (req, res) => {
+    try {
+        const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&ordering=-rating&page_size=40`);
+        const data = await response.json();
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "Fout bij ophalen" });
+    }
+});
+
+// Genre
+app.get("/api/genre/:genre", async (req, res) => {
+    try {
+        const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&genres=${req.params.genre}&ordering=-rating&page_size=20`);
+        const data = await response.json();
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "Fout bij ophalen genre games" });
+    }
+});
+
+// Platform games
+app.get("/api/platform/:platform", async (req, res) => {
+    try {
+        const platformSlugs: Record<string, number> = {
+            pc: 4,
+            playstation: 187,
+            xbox: 186,
+            nintendo: 7
+        };
+        const platformId = platformSlugs[req.params.platform];
+        if (!platformId) {
+            res.status(400).json({ error: "Ongeldig platform" });
+            return;
+        }
+        const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&platforms=${platformId}&ordering=-rating&page_size=20`);
+        const data = await response.json();
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: "Fout bij ophalen platform games" });
+    }
+});
 // ===========================
 // Start server
 // ===========================
@@ -203,6 +274,50 @@ app.put("/api/current-game", secureMiddleware, async (req, res) => {
         await setCurrentGame(userId, game);
         req.session.user!.currentGame = game;
         res.json({ message: "Huidige game ingesteld!" });
+    } catch (e) {
+        res.status(500).json({ error: "Serverfout" });
+    }
+});
+
+// ===========================
+// API: Collectie ophalen
+// ===========================
+app.get("/api/collection/:userId", secureMiddleware, async (req, res) => {
+    try {
+        const collection = await getCollection(req.params.userId as string);
+        res.json(collection);
+    } catch (e) {
+        res.status(500).json({ error: "Serverfout" });
+    }
+});
+
+// ===========================
+// API: Aan collectie toevoegen
+// ===========================
+app.post("/api/collection", secureMiddleware, async (req, res) => {
+    try {
+        const { userId, game, status, nickname } = req.body;
+        await addToCollection(userId, game, status || "Backlog", nickname);
+        res.json({ message: "Toegevoegd aan collectie!" });
+    } catch (e: any) {
+        res.status(400).json({ error: e.message });
+    }
+});
+
+app.delete("/api/collection/:userId/:gameId", secureMiddleware, async (req, res) => {
+    try {
+        await removeFromCollection(req.params.userId as string, Number(req.params.gameId));
+        res.json({ message: "Verwijderd uit collectie!" });
+    } catch (e) {
+        res.status(500).json({ error: "Serverfout" });
+    }
+});
+
+app.put("/api/collection/:userId/:gameId/status", secureMiddleware, async (req, res) => {
+    try {
+        const { status } = req.body;
+        await updateCollectionStatus(req.params.userId as string, Number(req.params.gameId), status);
+        res.json({ message: "Status bijgewerkt!" });
     } catch (e) {
         res.status(500).json({ error: "Serverfout" });
     }

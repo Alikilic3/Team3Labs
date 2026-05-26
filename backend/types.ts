@@ -66,3 +66,12 @@ export interface GameDetail {
 export interface RawgResponse {
     results: Game[];
 }
+
+export interface CollectionEntry {
+    _id?: ObjectId;
+    userId: string;
+    game: Game;
+    status: "Backlog" | "Playing" | "Completed";
+    nickname?: string;
+    addedAt: Date;
+}

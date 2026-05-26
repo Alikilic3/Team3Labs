@@ -1,6 +1,6 @@
 import { Collection, MongoClient, ObjectId } from "mongodb";
 import dotenv from "dotenv";
-import { User, Favorite, Game } from "./types";
+import { User, Favorite, Game,CollectionEntry  } from "./types";
 import bcrypt from "bcrypt";
 dotenv.config();
 
@@ -16,7 +16,10 @@ export const client = new MongoClient(uri);
 // ===========================
 export const usersCollection: Collection<User> = client.db("gamehub").collection<User>("users");
 export const favoritesCollection: Collection<Favorite> = client.db("gamehub").collection<Favorite>("favorites");
-
+export const collectionCollection: Collection<CollectionEntry> = client.db("gamehub").collection<CollectionEntry>("collection");
+export async function getUserById(userId: string) {
+    return await usersCollection.findOne({ _id: new ObjectId(userId) });
+}
 // ===========================
 // Afsluiten
 // ===========================
@@ -96,5 +99,35 @@ export async function setCurrentGame(userId: string, game: Game | null) {
     return await usersCollection.updateOne(
         { _id: new ObjectId(userId) },
         { $set: { currentGame: game } }
+    );
+}
+
+// ===========================
+// Collectie
+// ===========================
+export async function getCollection(userId: string) {
+    return await collectionCollection.find({ userId }).toArray();
+}
+
+export async function addToCollection(userId: string, game: Game, status: string, nickname?: string) {
+    const existing = await collectionCollection.findOne({ userId, "game.id": game.id });
+    if (existing) throw new Error("Game zit al in je collectie");
+    return await collectionCollection.insertOne({
+        userId,
+        game,
+        status: status as "Backlog" | "Playing" | "Completed",
+        nickname,
+        addedAt: new Date()
+    });
+}
+
+export async function removeFromCollection(userId: string, gameId: number) {
+    return await collectionCollection.deleteOne({ userId, "game.id": gameId });
+}
+
+export async function updateCollectionStatus(userId: string, gameId: number, status: string) {
+    return await collectionCollection.updateOne(
+        { userId, "game.id": gameId },
+        { $set: { status: status as "Backlog" | "Playing" | "Completed" } }
     );
 }

@@ -4,35 +4,142 @@
 <body>
 <%- include('partials/header-app', { activePage: 'search' }) %>
 
-<main class="content-wrapper app-content">
-    <section class="search-section">
-        <h1 class="page-title">Ontdek nieuwe games!</h1>
-        <div class="search-modes">
-            <button id="favoritesViewBtn" class="mode-btn active">Mijn favoriete games</button>
-            <button id="searchViewBtn" class="mode-btn">Zoek nieuwe games</button>
-        </div>
-        <div class="search-box-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="Zoek een game via de RAWG database..." autocomplete="off">
-            <button id="searchBtn" class="btn btn-primary search-btn">Zoeken</button>
-            <ul class="autocomplete-results" style="display: none"></ul>
-        </div>
-    </section>
+<div class="search-page-layout">
 
-    <section class="results-section">
-        <h2>Zoekresultaten</h2>
-        <div class="games-grid" id="gamesGrid"></div>
-    </section>
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="search-sidebar">
 
-    <div id="gameModal" class="game-modal hidden">
-        <div class="game-modal-content">
-            <button id="closeModal" class="close-modal">&times;</button>
-            <div id="modalBody"></div>
-        </div>
+    <!-- Favorieten -->
+    <div class="sidebar-section">
+        <button class="sidebar-btn" id="favoritesBtn">
+            <i class="bi bi-heart-fill"></i>
+            <span>Mijn Favorieten</span>
+        </button>
     </div>
-</main>
+
+    <!-- Top Games -->
+    <div class="sidebar-section">
+        <p class="sidebar-section-title">
+            <i class="bi bi-trophy-fill"></i> Top Games
+        </p>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="best-of-year">
+            <i class="bi bi-calendar-check"></i>
+            <span>Best of the Year</span>
+        </button>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="popular-2025">
+            <i class="bi bi-fire"></i>
+            <span>Popular in 2025</span>
+        </button>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="all-time-top">
+            <i class="bi bi-award"></i>
+            <span>All Time Top 250</span>
+        </button>
+    </div>
+
+    <!-- Genres -->
+    <div class="sidebar-section">
+        <p class="sidebar-section-title">
+            <i class="bi bi-controller"></i> Genres
+        </p>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="action">
+            <i class="bi bi-lightning-fill"></i>
+            <span>Actie</span>
+        </button>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="rpg">
+            <i class="bi bi-magic"></i>
+            <span>RPG</span>
+        </button>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="sports">
+            <i class="bi bi-dribbble"></i>
+            <span>Sport</span>
+        </button>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="shooter">
+            <i class="bi bi-crosshair"></i>
+            <span>Shooter</span>
+        </button>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="strategy">
+            <i class="bi bi-puzzle"></i>
+            <span>Strategie</span>
+        </button>
+    </div>
+
+    <!-- Platforms -->
+    <div class="sidebar-section">
+        <p class="sidebar-section-title">
+            <i class="bi bi-display"></i> Platforms
+        </p>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="platform-pc">
+            <i class="bi bi-windows"></i>
+            <span>PC</span>
+        </button>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="platform-playstation">
+            <i class="bi bi-playstation"></i>
+            <span>PlayStation</span>
+        </button>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="platform-xbox">
+            <i class="bi bi-xbox"></i>
+            <span>Xbox</span>
+        </button>
+        <button class="sidebar-btn sidebar-sub-btn" data-filter="platform-nintendo">
+            <i class="bi bi-nintendo-switch"></i>
+            <span>Nintendo</span>
+        </button>
+    </div>
+
+</aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="search-main">
+
+        <!-- Zoekbalk + Filters -->
+        <div class="search-toolbar">
+            <div class="search-bar">
+                <input type="text" id="searchInput" class="search-input" placeholder="Zoek een game via de RAWG database..." autocomplete="off">
+                <button id="searchBtn" class="btn btn-primary search-btn">
+                    <i class="bi bi-search"></i> Zoeken
+                </button>
+            </div>
+            <div class="search-filters">
+                <select id="filterPlatform" class="filter-select">
+                    <option value="">Alle platforms</option>
+                    <option value="pc">PC</option>
+                    <option value="playstation">PlayStation</option>
+                    <option value="xbox">Xbox</option>
+                    <option value="nintendo">Nintendo</option>
+                </select>
+                <select id="filterRating" class="filter-select">
+                    <option value="">Alle ratings</option>
+                    <option value="4">4+ ⭐</option>
+                    <option value="3">3+ ⭐</option>
+                    <option value="2">2+ ⭐</option>
+                </select>
+                <select id="filterSort" class="filter-select">
+                    <option value="-rating">Beste rating</option>
+                    <option value="-released">Nieuwste</option>
+                    <option value="-playtime">Meest gespeeld</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Titel + Grid -->
+        <h1 class="page-title" id="pageTitle">Mijn Favorieten</h1>
+        <div class="games-grid" id="gamesGrid"></div>
+
+    </main>
+
+</div>
+
+<!-- Game Modal -->
+<div id="gameModal" class="game-modal hidden">
+    <div class="game-modal-content">
+        <button id="closeModal" class="close-modal">&times;</button>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
 <script>
     const SESSION_USER_ID = "<%= userId %>";
+    const SESSION_CURRENT_GAME_ID = <%= currentGameId || 'null' %>;
 </script>
-<script type="module" src="/js/search.js"></script>
 <script type="module" src="/js/search.js"></script>
 <%- include('partials/footer') %>
