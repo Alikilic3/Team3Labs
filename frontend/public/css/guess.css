@@ -193,6 +193,9 @@
     background: #2a2a2d;
     border-radius: 10px;
 }
+.hidden {
+    display: none;
+}
 
 .score-rank {
     color: #a855f7;

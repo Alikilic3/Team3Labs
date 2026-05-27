@@ -7,142 +7,69 @@ const closeModal = document.getElementById("closeModal");
 const favoritesBtn = document.getElementById("favoritesBtn");
 const pageTitle = document.getElementById("pageTitle");
 const sidebarBtns = document.querySelectorAll(".sidebar-sub-btn");
-const filterPlatform = document.getElementById("filterPlatform");
 const filterRating = document.getElementById("filterRating");
 const filterSort = document.getElementById("filterSort");
-const autocompleteDropdown = document.getElementById("autocompleteDropdown");
 const pagination = document.getElementById("pagination");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const paginationInfo = document.getElementById("paginationInfo");
 
+
 let currentGames = [];
 let searchTimeout;
-let cachedFavorites = [];
-let cachedCollection = [];
-let activeCurrentGameId = SESSION_CURRENT_GAME_ID;
 let currentPage = 1;
 let totalPages = 1;
-let lastSearchQuery = "";
 
-// ===========================
-// Gebruiker ophalen
-// ===========================
+
 function getUserId() {
     return SESSION_USER_ID || "";
 }
 
-// ===========================
-// Actieve sidebar knop
-// ===========================
+
 function setActiveBtn(activeBtn) {
     favoritesBtn.classList.remove("active");
     sidebarBtns.forEach(btn => btn.classList.remove("active"));
     activeBtn.classList.add("active");
 }
 
-// ===========================
-// Filters toepassen
-// ===========================
-function applyFilters(games) {
-    let filtered = [...games];
-    const platform = filterPlatform.value;
-    const minRating = filterRating.value;
 
-    if (platform) {
-        filtered = filtered.filter(game =>
-            game.parent_platforms?.some(p =>
-                p.platform.slug?.includes(platform) ||
-                p.platform.name?.toLowerCase().includes(platform)
-            )
-        );
-    }
-
-    if (minRating) {
-        filtered = filtered.filter(game => game.rating >= Number(minRating));
-    }
-
-    const sort = filterSort.value;
-    if (sort === "-rating") {
-        filtered.sort((a, b) => b.rating - a.rating);
-    } else if (sort === "-released") {
-        filtered.sort((a, b) => new Date(b.released || 0).getTime() - new Date(a.released || 0).getTime());
-    } else if (sort === "-playtime") {
-        filtered.sort((a, b) => b.playtime - a.playtime);
-    }
-
-    return filtered;
-}
-
-// ===========================
-// Favorieten laden
-// ===========================
-async function loadFavorites() {
+async function getFavorites() {
     const userId = getUserId();
-    if (!userId) return;
+    if (!userId) return [];
     const response = await fetch(`/api/favorites/${userId}`);
     const data = await response.json();
-    cachedFavorites = data.map((f) => f.game);
+    return data.map(f => f.game);
 }
 
-function isFavorite(gameId) {
-    return cachedFavorites.some((game) => game.id === gameId);
+async function isFavorite(gameId) {
+    const favorites = await getFavorites();
+    return favorites.some(game => game.id === gameId);
 }
 
 async function toggleFavorite(gameId) {
     const userId = getUserId();
     if (!userId) return;
-    const favorite = isFavorite(gameId);
-    if (favorite) {
+
+    if (await isFavorite(gameId)) {
         await fetch(`/api/favorites/${userId}/${gameId}`, { method: "DELETE" });
-        cachedFavorites = cachedFavorites.filter(g => g.id !== gameId);
     } else {
-        const gameToAdd = currentGames.find((game) => game.id === gameId);
-        if (!gameToAdd) return;
+        const game = currentGames.find(g => g.id === gameId);
+        if (!game) return;
         await fetch("/api/favorites", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId, game: gameToAdd })
+            body: JSON.stringify({ userId, game })
         });
-        cachedFavorites.push(gameToAdd);
     }
 
     const btn = document.querySelector(`.favorite-btn[data-favorite-id="${gameId}"]`);
     if (btn) {
-        const icon = btn.querySelector("i");
-        if (favorite) {
-            icon.className = "bi bi-heart";
-            btn.classList.remove("is-favorite");
-        } else {
-            icon.className = "bi bi-heart-fill";
-            btn.classList.add("is-favorite");
-        }
+        const isFav = await isFavorite(gameId);
+        btn.querySelector("i").className = isFav ? "bi bi-heart-fill" : "bi bi-heart";
+        isFav ? btn.classList.add("is-favorite") : btn.classList.remove("is-favorite");
     }
 }
 
-// ===========================
-// Collectie laden
-// ===========================
-async function loadCollectionCache() {
-    const userId = getUserId();
-    if (!userId) return;
-    const response = await fetch(`/api/collection/${userId}`);
-    const data = await response.json();
-    cachedCollection = data.map((entry) => entry.game.id);
-}
-
-function isInCollection(gameId) {
-    return cachedCollection.includes(gameId);
-}
-
-function isCurrentGame(gameId) {
-    if (activeCurrentGameId === null || activeCurrentGameId === undefined) return false;
-    return Number(activeCurrentGameId) === Number(gameId);
-}
-
-// ===========================
-// Platform icons
-// ===========================
 function getPlatformIcons(name) {
     const lower = name.toLowerCase();
     if (lower.includes("pc")) return `<i class="bi bi-windows"></i>`;
@@ -152,39 +79,46 @@ function getPlatformIcons(name) {
     return "";
 }
 
-// ===========================
-// Games renderen
-// ===========================
+
 async function renderGames(games) {
     games = games.filter(game => game.background_image);
     currentGames = games;
-    const filtered = applyFilters(games);
     gamesGrid.innerHTML = "";
-    if (filtered.length === 0) {
+
+    if (games.length === 0) {
         gamesGrid.innerHTML = "<p>Geen games gevonden.</p>";
         return;
     }
-    for (const game of filtered) {
-        const image = game.background_image;
+
+    // Filter op rating
+    const minRating = filterRating.value;
+    if (minRating) {
+        games = games.filter(game => game.rating >= Number(minRating));
+    }
+
+    // Sortering
+    const sort = filterSort.value;
+    if (sort === "-rating") {
+        games.sort((a, b) => b.rating - a.rating);
+    } else if (sort === "-released") {
+        games.sort((a, b) => new Date(b.released) - new Date(a.released));
+    }
+
+    for (const game of games) {
         const released = game.released ? game.released : "Onbekend";
         const platformIcons = game.parent_platforms
-            ? game.parent_platforms.map((p) => getPlatformIcons(p.platform.name)).join("")
+            ? game.parent_platforms.map(p => getPlatformIcons(p.platform.name)).join("")
             : "";
-        const favorite = isFavorite(game.id);
+        const favorite = await isFavorite(game.id);
         const favoriteIcon = favorite ? "bi-heart-fill" : "bi-heart";
         const favoriteClass = favorite ? "is-favorite" : "";
-        const inCollection = isInCollection(game.id);
-        const collectionIcon = inCollection ? "bi-gift-fill" : "bi-gift";
-        const collectionStyle = inCollection ? "background: #a855f7; border-color: #a855f7;" : "";
-        const isCurrent = isCurrentGame(game.id);
-        const currentStyle = isCurrent ? "border: 2px solid #a855f7;" : "";
 
         gamesGrid.innerHTML += `
             <article class="game-card">
                 <div class="game-card-image-wrapper">
                     <img 
                         class="game-card-image"
-                        src="${image}" 
+                        src="${game.background_image}" 
                         alt="${game.name}"
                         data-id="${game.id}"
                         onerror="this.style.display='none'"
@@ -200,17 +134,15 @@ async function renderGames(games) {
                         </button>
                     </div>
                     <h3 class="game-card-title">${game.name}</h3>
-                    
                     <div class="game-card-actions-icons">
-                        <button class="icon-btn add-collection-btn" data-game-id="${game.id}" title="Toevoegen aan collectie" style="${collectionStyle}">
-                            <i class="bi ${collectionIcon}"></i>
+                        <button class="icon-btn add-collection-btn" data-game-id="${game.id}" title="Toevoegen aan collectie">
+                            <i class="bi bi-gift"></i>
                         </button>
-                        <button class="icon-btn current-game-btn" data-game-id="${game.id}" style="${currentStyle}">
+                        <button class="icon-btn current-game-btn" data-game-id="${game.id}">
                             <i class="bi bi-joystick"></i>
                             <span>Stel in als huidige game</span>
                         </button>
                     </div>
-
                     <div class="game-card-info">
                         <div class="info-row">
                             <span class="info-label"><i class="bi bi-star-fill"></i> Score</span>
@@ -231,50 +163,38 @@ async function renderGames(games) {
     }
 }
 
-// ===========================
-// Favorieten pagina
-// ===========================
 async function renderFavorites() {
     pageTitle.textContent = "Mijn Favorieten";
     setActiveBtn(favoritesBtn);
-    await loadFavorites();
-    await loadCollectionCache();
-    await renderGames(cachedFavorites);
     pagination.style.display = "none";
-    if (cachedFavorites.length === 0) {
+    const favorites = await getFavorites();
+    if (favorites.length === 0) {
         gamesGrid.innerHTML = "<p>Je hebt nog geen favoriete games.</p>";
+        return;
     }
+    await renderGames(favorites);
 }
 
-// ===========================
-// Games zoeken
-// ===========================
 async function searchGames(page = 1) {
     const query = searchInput.value.trim();
     if (query === "") {
         renderFavorites();
-        pagination.style.display = "none";
         return;
     }
     try {
-        lastSearchQuery = query;
         currentPage = page;
         pageTitle.textContent = `Zoekresultaten voor "${query}"`;
         const response = await fetch(`/api/search?q=${encodeURIComponent(query)}&page=${page}`);
         if (!response.ok) throw new Error(response.statusText);
         const data = await response.json();
-
-        const count = data.count || 0;
-        totalPages = Math.ceil(count / 20);
-
+        totalPages = Math.ceil(data.count / 20);
         await renderGames(data.results);
+        updatePagination();
         document.querySelector(".search-main").scrollTo({ top: 0, behavior: "smooth" });
-        updatePagination(); // ← geen pagination.style.display = "none" meer hierboven!
     } catch (error) {
         gamesGrid.innerHTML = "<p>Er ging iets fout bij het ophalen van games.</p>";
     }
 }
-
 function updatePagination() {
     if (totalPages <= 1) {
         pagination.style.display = "none";
@@ -285,21 +205,15 @@ function updatePagination() {
     prevBtn.disabled = currentPage <= 1;
     nextBtn.disabled = currentPage >= totalPages;
 }
-// ===========================
-// Game modal
-// ===========================
+
 async function openGameModal(gameId) {
     try {
         const response = await fetch(`/api/games/${gameId}`);
         if (!response.ok) throw new Error(response.statusText);
         const game = await response.json();
-        const image = game.background_image
-            ? game.background_image
-            : "https://via.placeholder.com/800x300?text=Geen+afbeelding";
+        const image = game.background_image || "https://via.placeholder.com/800x300?text=Geen+afbeelding";
         const released = game.released ? game.released : "Onbekend";
-        const description = game.description_raw
-            ? game.description_raw
-            : "Geen beschrijving beschikbaar.";
+        const description = game.description_raw || "Geen beschrijving beschikbaar.";
         modalBody.innerHTML = `
             <img class="modal-image" src="${image}" alt="${game.name}">
             <h2 class="modal-title">${game.name}</h2>
@@ -313,50 +227,45 @@ async function openGameModal(gameId) {
         `;
         gameModal.classList.remove("hidden");
     } catch (error) {
-        console.log(error);
+        gamesGrid.innerHTML = "<p>Er ging iets fout.</p>";
     }
 }
 
-// ===========================
-// Event listeners
-// ===========================
+// Event Listener
 gamesGrid.addEventListener("click", async (event) => {
     const target = event.target;
 
+    // Favoriet knop
     const favoriteBtn = target.closest(".favorite-btn");
     if (favoriteBtn) {
-        const gameId = favoriteBtn.getAttribute("data-favorite-id");
-        if (gameId) await toggleFavorite(Number(gameId));
+        const gameId = Number(favoriteBtn.getAttribute("data-favorite-id"));
+        await toggleFavorite(gameId);
         return;
     }
 
+    // Aan collectie toevoegen
     const addCollectionBtn = target.closest(".add-collection-btn");
     if (addCollectionBtn) {
         const gameId = Number(addCollectionBtn.getAttribute("data-game-id"));
         const game = currentGames.find(g => g.id === gameId);
         if (!game) return;
         const userId = getUserId();
-        try {
-            const response = await fetch("/api/collection", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userId, game, status: "Backlog" })
-            });
-            const data = await response.json();
-            if (!response.ok) {
-                alert(data.error);
-                return;
-            }
-            addCollectionBtn.querySelector("i").className = "bi bi-gift-fill";
-            addCollectionBtn.style.background = "#a855f7";
-            addCollectionBtn.style.borderColor = "#a855f7";
-            cachedCollection.push(gameId);
-        } catch (e) {
-            alert("Er ging iets fout!");
+        const response = await fetch("/api/collection", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, game, status: "Backlog" })
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            alert(data.error);
+            return;
         }
+        addCollectionBtn.querySelector("i").className = "bi bi-gift-fill";
+        addCollectionBtn.style.background = "#a855f7";
         return;
     }
 
+    // Huidige game instellen
     const currentGameBtn = target.closest(".current-game-btn");
     if (currentGameBtn) {
         const gameId = Number(currentGameBtn.getAttribute("data-game-id"));
@@ -367,23 +276,22 @@ gamesGrid.addEventListener("click", async (event) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ game })
         });
-        activeCurrentGameId = gameId;
-        currentGameBtn.style.border = "2px solid #a855f7";
-        currentGameBtn.style.background = "";
         alert(`${game.name} is ingesteld als huidige game!`);
         window.location.reload();
         return;
     }
 
+    // Game modal openen
     const image = target.closest(".game-card-image");
     if (image) {
-        const gameId = image.getAttribute("data-id");
-        if (gameId) await openGameModal(Number(gameId));
+        await openGameModal(Number(image.getAttribute("data-id")));
     }
 });
 
+// Favorieten knop
 favoritesBtn.addEventListener("click", renderFavorites);
 
+// Sidebar knoppen
 sidebarBtns.forEach(btn => {
     btn.addEventListener("click", async () => {
         setActiveBtn(btn);
@@ -400,34 +308,46 @@ sidebarBtns.forEach(btn => {
         } else if (filter === "all-time-top") {
             title = "All Time Top 250";
             url = "/api/all-time-top";
-        } else if (filter.startsWith("platform-")) {
-            const platform = filter.replace("platform-", "");
-            const platformNames = {
-                pc: "PC Games",
-                playstation: "PlayStation Games",
-                xbox: "Xbox Games",
-                nintendo: "Nintendo Games"
-            };
-            title = platformNames[platform] || platform;
-            url = `/api/platform/${platform}`;
-        } else {
-            const genreNames = {
-                action: "Actie Games",
-                rpg: "RPG Games",
-                sports: "Sport Games",
-                shooter: "Shooter Games",
-                strategy: "Strategie Games",
-                indie: "Indie Games",
-                adventure: "Avontuur Games",
-                puzzle: "Puzzel Games"
-            };
-            title = genreNames[filter] || filter;
-            url = `/api/genre/${filter}`;
+        } else if (filter === "platform-pc") {
+            title = "PC Games";
+            url = "/api/platform/pc";
+        } else if (filter === "platform-playstation") {
+            title = "PlayStation Games";
+            url = "/api/platform/playstation";
+        } else if (filter === "platform-xbox") {
+            title = "Xbox Games";
+            url = "/api/platform/xbox";
+        } else if (filter === "platform-nintendo") {
+            title = "Nintendo Games";
+            url = "/api/platform/nintendo";
+        } else if (filter === "action") {
+            title = "Actie Games";
+            url = "/api/genre/action";
+        } else if (filter === "rpg") {
+            title = "RPG Games";
+            url = "/api/genre/rpg";
+        } else if (filter === "sports") {
+            title = "Sport Games";
+            url = "/api/genre/sports";
+        } else if (filter === "shooter") {
+            title = "Shooter Games";
+            url = "/api/genre/shooter";
+        } else if (filter === "strategy") {
+            title = "Strategie Games";
+            url = "/api/genre/strategy";
+        } else if (filter === "indie") {
+            title = "Indie Games";
+            url = "/api/genre/indie";
+        } else if (filter === "adventure") {
+            title = "Avontuur Games";
+            url = "/api/genre/adventure";
+        } else if (filter === "puzzle") {
+            title = "Puzzel Games";
+            url = "/api/genre/puzzle";
         }
 
         pageTitle.textContent = title;
-        await loadFavorites();
-        await loadCollectionCache();
+        pagination.style.display = "none";
         try {
             const response = await fetch(url);
             const data = await response.json();
@@ -438,10 +358,11 @@ sidebarBtns.forEach(btn => {
     });
 });
 
-[filterPlatform, filterRating, filterSort].forEach(filter => {
-    filter.addEventListener("change", () => renderGames(currentGames));
-});
+// Filters
+filterRating.addEventListener("change", () => renderGames(currentGames));
+filterSort.addEventListener("change", () => renderGames(currentGames));
 
+// Paginatie knoppen
 prevBtn.addEventListener("click", () => {
     if (currentPage > 1) searchGames(currentPage - 1);
 });
@@ -449,31 +370,22 @@ prevBtn.addEventListener("click", () => {
 nextBtn.addEventListener("click", () => {
     if (currentPage < totalPages) searchGames(currentPage + 1);
 });
+
+// Zoeken
 searchBtn.addEventListener("click", searchGames);
 
 searchInput.addEventListener("input", () => {
     clearTimeout(searchTimeout);
-    const query = searchInput.value.trim();
-
-    if (query === "") {
-        autocompleteDropdown.classList.remove("active");
-        renderFavorites();
-        return;
-    }
-
     searchTimeout = window.setTimeout(() => {
-        showAutocomplete(query);
-        searchGames();
+        if (searchInput.value.trim() === "") {
+            renderFavorites();
+        } else {
+            searchGames();
+        }
     }, 400);
 });
 
-// Sluit dropdown als je erbuiten klikt
-document.addEventListener("click", (e) => {
-    if (!e.target.closest(".autocomplete-wrapper")) {
-        autocompleteDropdown.classList.remove("active");
-    }
-});
-
+// Modal sluiten
 closeModal.addEventListener("click", () => {
     gameModal.classList.add("hidden");
 });
@@ -484,72 +396,11 @@ gameModal.addEventListener("click", (event) => {
     }
 });
 
-
-
-// ===========================
-// Autocomplete
-// ===========================
-async function showAutocomplete(query) {
-    if (query.length < 2) {
-        autocompleteDropdown.classList.remove("active");
-        return;
-    }
-
-    try {
-        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-        const data = await response.json();
-        const results = data.results?.filter(g => g.background_image).slice(0, 6) || [];
-
-        if (results.length === 0) {
-            autocompleteDropdown.classList.remove("active");
-            return;
-        }
-
-        autocompleteDropdown.innerHTML = results.map(game => `
-            <li data-id="${game.id}" data-name="${game.name.replace(/"/g, '&quot;')}">
-                <img src="${game.background_image}" alt="${game.name}">
-                <span>${game.name}</span>
-            </li>
-        `).join("");
-
-        autocompleteDropdown.classList.add("active");
-
-       autocompleteDropdown.querySelectorAll("li").forEach(li => {
-    li.addEventListener("click", async () => {
-        const gameId = Number(li.getAttribute("data-id"));
-        const gameName = li.getAttribute("data-name");
-        searchInput.value = gameName;
-        autocompleteDropdown.classList.remove("active");
-        
-        // Haal de specifieke game op via ID
-        pageTitle.textContent = `Zoekresultaten voor "${gameName}"`;
-        gamesGrid.innerHTML = "<p>Laden...</p>";
-        
-        try {
-            const response = await fetch(`/api/games/${gameId}`);
-            const game = await response.json();
-            await renderGames([game]);
-        } catch (e) {
-            gamesGrid.innerHTML = "<p>Er ging iets fout.</p>";
-        }
-    });
-});
-
-    } catch (e) {
-        autocompleteDropdown.classList.remove("active");
-    }
-}
-
-// ===========================
 // Start
-// ===========================
 async function loadDefaultGames() {
     pageTitle.textContent = "Populaire Games";
-    favoritesBtn.classList.remove("active");
     const popularBtn = document.querySelector('[data-filter="popular-2025"]');
     if (popularBtn) popularBtn.classList.add("active");
-    await loadFavorites();
-    await loadCollectionCache();
     try {
         const response = await fetch("/api/popular-2025");
         const data = await response.json();
@@ -558,5 +409,5 @@ async function loadDefaultGames() {
         gamesGrid.innerHTML = "<p>Er ging iets fout.</p>";
     }
 }
-loadDefaultGames();
 
+loadDefaultGames();

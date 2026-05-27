@@ -5,7 +5,7 @@
 <%- include('partials/header-app', { activePage: 'compare' }) %>
 
 <main class="content-wrapper app-content">
-    <section class="compare-intro">
+    <section class="vergelijk-intro">
         <h1 class="page-title">Games Vergelijken</h1>
         <p>Kies twee games om hun statistieken zij-aan-zij te vergelijken.</p>
     </section>
@@ -21,19 +21,19 @@
             <input type="text" id="searchInput2" class="search-input" placeholder="Game 2 (bijv. RDR 2)..." autocomplete="off">
         </div>
         
-        <div class="compare-actions" style="display: flex; gap: 10px; margin-top: 15px; justify-content: center; width: 100%;">
+        <div class="compare-actions">
             <button id="compareBtn" class="btn btn-primary compare-btn"><i class="bi bi-bar-chart-fill"></i> Vergelijk</button>
             <button id="resetBtn" class="btn btn-outline reset-btn"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
         </div>
     </section>
 
     <section class="results-section">
-        <div id="defaultGamesArea" class="default-games-container" style="margin-top: 2rem;">
-            <h2 id="gridTitle" style="text-align: center; margin-bottom: 2rem;"><i class="bi bi-fire text-danger"></i> Populaire Games in 2025</h2>
-            <div id="topGamesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem;"></div>
+        <div id="defaultGamesArea" class="default-games-container">
+            <h2 id="gridTitle"><i class="bi bi-fire text-danger"></i> Populaire Games in 2025</h2>
+            <div id="topGamesGrid"></div>
         </div>
 
-        <div class="compare-results-area" id="compareResults" aria-live="polite" style="display: none; margin-top: 2rem;"></div>
+        <div class="compare-results-area" id="compareResults" aria-live="polite"></div>
     </section>
 </main>
 
