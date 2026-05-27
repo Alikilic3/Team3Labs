@@ -4,16 +4,14 @@ import { User, Favorite, Game,CollectionEntry  } from "./types";
 import bcrypt from "bcrypt";
 dotenv.config();
 
-// ===========================
+
 // Connectie
-// ===========================
 const saltRounds = 10;
 const uri = process.env.MONGODB_URI!;
 export const client = new MongoClient(uri);
 
-// ===========================
+
 // Collections
-// ===========================
 export const usersCollection: Collection<User> = client.db("gamehub").collection<User>("users");
 export const favoritesCollection: Collection<Favorite> = client.db("gamehub").collection<Favorite>("favorites");
 export const collectionCollection: Collection<CollectionEntry> = client.db("gamehub").collection<CollectionEntry>("collection");
@@ -35,9 +33,7 @@ export async function getScoreboard() {
         .limit(10)
         .toArray();
 }
-// ===========================
 // Afsluiten
-// ===========================
 async function exit() {
     try {
         await client.close();
@@ -48,9 +44,7 @@ async function exit() {
     process.exit(0);
 }
 
-// ===========================
 // Verbinden
-// ===========================
 export async function connect() {
     try {
         await client.connect();
@@ -62,9 +56,7 @@ export async function connect() {
     }
 }
 
-// ===========================
 // Users
-// ===========================
 export async function getUserByEmail(email: string) {
     return await usersCollection.findOne({ email });
 }
@@ -75,9 +67,7 @@ export async function createUser(name: string, email: string, password: string) 
     return await usersCollection.insertOne(newUser);
 }
 
-// ===========================
 // Favorieten
-// ===========================
 export async function getFavoritesByUserId(userId: string) {
     return await favoritesCollection.find({ userId }).toArray();
 }
@@ -117,9 +107,7 @@ export async function setCurrentGame(userId: string, game: Game | null) {
     );
 }
 
-// ===========================
 // Collectie
-// ===========================
 export async function getCollection(userId: string) {
     return await collectionCollection.find({ userId }).toArray();
 }

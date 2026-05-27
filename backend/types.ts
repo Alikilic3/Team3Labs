@@ -1,8 +1,8 @@
 import { ObjectId } from "mongodb";
 
-// ===========================
+
 // Database interfaces
-// ===========================
+
 
 // Stelt een gebruiker voor in de database
 export interface User {
@@ -14,16 +14,12 @@ export interface User {
     currentGame?: Game | null;
 }
 
-// Stelt een favoriet spel voor in de database
 export interface Favorite {
     _id?: ObjectId;
     userId: string;
     game: Game;
 }
 
-// ===========================
-// RAWG API interfaces
-// ===========================
 
 // Details van een platform (bv. PC, PlayStation)
 export interface PlatformDetails {

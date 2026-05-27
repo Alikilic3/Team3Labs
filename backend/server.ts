@@ -70,17 +70,14 @@ app.get("/guess", secureMiddleware, (req, res) => {
     });
 });
 
-// ===========================
+
 // Logout
-// ===========================
 app.post("/logout", (req, res) => {
     req.session.destroy(() => {
         res.redirect("/");
     });
 });
-// ===========================
 // API: Login
-// ===========================
 app.post("/api/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -93,9 +90,7 @@ app.post("/api/login", async (req, res) => {
     }
 });
 
-// ===========================
 // API: Registreren
-// ===========================
 app.post("/api/register", async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -111,9 +106,8 @@ app.post("/api/register", async (req, res) => {
     }
 });
 
-// ===========================
+
 // API: Favorieten
-// ===========================
 app.get("/api/favorites/:userId", async (req, res) => {
     try {
         const favorites = await getFavoritesByUserId(req.params.userId);
@@ -147,9 +141,6 @@ app.delete("/api/favorites/:userId/:gameId", async (req, res) => {
     }
 });
 
-// ===========================
-// API: RAWG Proxy - Zoeken
-// ===========================
 app.get("/api/search", async (req, res) => {
     try {
         const query = req.query.q as string;
@@ -162,9 +153,7 @@ app.get("/api/search", async (req, res) => {
     }
 });
 
-// ===========================
-// API: RAWG Proxy - Game details
-// ===========================
+// API
 app.get("/api/games/:id", async (req, res) => {
     try {
         const response = await fetch(`${RAWG_BASE_URL}/games/${req.params.id}?key=${RAWG_KEY}`);
@@ -175,9 +164,7 @@ app.get("/api/games/:id", async (req, res) => {
     }
 });
 
-// ===========================
-// API: RAWG Proxy - Vergelijken
-// ===========================
+
 app.get("/api/compare", async (req, res) => {
     try {
         const query = req.query.q as string;
@@ -193,7 +180,6 @@ app.get("/api/compare", async (req, res) => {
     }
 });
 
-// Best of the year
 app.get("/api/best-of-year", async (req, res) => {
     try {
         const year = new Date().getFullYear();
@@ -205,7 +191,6 @@ app.get("/api/best-of-year", async (req, res) => {
     }
 });
 
-// Popular in 2025
 app.get("/api/popular-2025", async (req, res) => {
     try {
         const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&dates=2025-01-01,2025-12-31&ordering=-added&page_size=20`);
@@ -216,7 +201,7 @@ app.get("/api/popular-2025", async (req, res) => {
     }
 });
 
-// All time top
+
 app.get("/api/all-time-top", async (req, res) => {
     try {
         const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&ordering=-rating&page_size=40`);
@@ -227,7 +212,7 @@ app.get("/api/all-time-top", async (req, res) => {
     }
 });
 
-// Genre
+
 app.get("/api/genre/:genre", async (req, res) => {
     try {
         const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&genres=${req.params.genre}&ordering=-rating&page_size=20`);
@@ -238,7 +223,7 @@ app.get("/api/genre/:genre", async (req, res) => {
     }
 });
 
-// Platform games
+
 app.get("/api/platform/:platform", async (req, res) => {
     try {
         const platformSlugs: Record<string, number> = {
@@ -259,16 +244,16 @@ app.get("/api/platform/:platform", async (req, res) => {
         res.status(500).json({ error: "Fout bij ophalen platform games" });
     }
 });
-// ===========================
+
 // Start server
-// ===========================
+
 app.listen(PORT, async () => {
     await connect();
     console.log(`Server draait op http://localhost:${PORT}`);
 });
-// ===========================
+
 // API: Huidige game instellen
-// ===========================
+
 app.put("/api/current-game", secureMiddleware, async (req, res) => {
     try {
         const { game } = req.body;
@@ -281,9 +266,7 @@ app.put("/api/current-game", secureMiddleware, async (req, res) => {
     }
 });
 
-// ===========================
 // API: Collectie ophalen
-// ===========================
 app.get("/api/collection/:userId", secureMiddleware, async (req, res) => {
     try {
         const collection = await getCollection(req.params.userId as string);
@@ -293,9 +276,7 @@ app.get("/api/collection/:userId", secureMiddleware, async (req, res) => {
     }
 });
 
-// ===========================
 // API: Aan collectie toevoegen
-// ===========================
 app.post("/api/collection", secureMiddleware, async (req, res) => {
     try {
         const { userId, game, status, nickname } = req.body;
@@ -326,9 +307,7 @@ app.put("/api/collection/:userId/:gameId/status", secureMiddleware, async (req, 
 });
 
 
-// ===========================
 // API: Random game voor Guess
-// ===========================
 app.get("/api/random-game", async (req, res) => {
     try {
         const page = Math.floor(Math.random() * 20) + 1;
@@ -343,9 +322,7 @@ app.get("/api/random-game", async (req, res) => {
     }
 });
 
-// ===========================
 // API: XP updaten
-// ===========================
 app.post("/api/xp", secureMiddleware, async (req, res) => {
     try {
         const { xp } = req.body;
@@ -358,9 +335,7 @@ app.post("/api/xp", secureMiddleware, async (req, res) => {
     }
 });
 
-// ===========================
 // API: Scorebord
-// ===========================
 app.get("/api/scoreboard", async (req, res) => {
     try {
         const scores = await getScoreboard();
