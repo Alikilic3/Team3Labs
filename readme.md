@@ -27,31 +27,3 @@ git checkout main
 git pull origin main
 git merge naamvanmerge
 git push origin main
-
-=> WIE DOET WAT
-
-    Yunus:
-     1. register
-     2. login + pophubs
-     3. inleiding
-
-    Oliver:
-     1. json
-     2. guessgame
-
-    Mehmet:
-     - search
-     - collection
-     - compare
-
-=> 1ste feedback
-
-- over ons verwijderen
-- Gebruik meer icoontjes
-  - Releadatum van games
-  - Huidige game (bovenaan)
-- Mobiel versie nier vergeten
-- Css frameworks?
-- vergeet LOGO niet!
-
-=> functionele zaken moeten werken zoals login in register

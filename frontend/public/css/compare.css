@@ -1,11 +1,9 @@
-/* --- Algemene Pagina Layout --- */
 .app-content {
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* --- Grid & Kaarten (De populaire games lijst) --- */
 #topGamesGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -14,11 +12,13 @@
 }
 
 .project-card {
-    background: #1a1a24;
-    border: 1px solid #323246;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .project-card:hover {
@@ -40,29 +40,36 @@
 
 .project-content {
     padding: 1rem;
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
-/* --- De Pop-up (Modal) styling --- */
+.add-to-compare-btn {
+    margin-top: auto;
+}
+
 .game-modal {
     position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    opacity: 1;
     transition: opacity 0.3s ease;
 }
 
 .game-modal.hidden {
     display: none;
-    opacity: 0;
 }
 
 .game-modal-content {
-    background: #1a1a24;
+    background: var(--bg-card);
     padding: 2rem;
     border-radius: 15px;
     width: 90%;
@@ -70,32 +77,30 @@
     max-height: 80vh;
     overflow-y: auto;
     position: relative;
-    border: 1px solid #444;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
 }
 
 .close-modal {
     position: absolute;
-    top: 10px; right: 15px;
+    top: 10px;
+    right: 15px;
     background: none;
     border: none;
-    color: white;
+    color: var(--text-main);
     font-size: 2rem;
     cursor: pointer;
 }
 
-/* --- Vergelijking sectie (Zij-aan-zij) --- */
 .compare-results-area {
+    display: none;
+    margin-top: 2rem;
     width: 100%;
 }
 
 .compare-card {
     display: flex;
     flex-direction: column;
-}
-
-/* Zorg dat de knoppen in de grid er goed uitzien */
-.add-to-compare-btn {
-    margin-top: 1rem;
 }
 
 .compare-actions {
@@ -113,15 +118,17 @@
 #gridTitle {
     text-align: center;
     margin-bottom: 2rem;
+    color: var(--text-main);
 }
 
-#topGamesGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
+.vergelijk-intro {
+    margin-bottom: 2rem;
 }
 
-.compare-results-area {
-    display: none;
-    margin-top: 2rem;
+.compare-search-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
 }

@@ -9,6 +9,9 @@
     </nav>
 
     <div class="auth-buttons">
+        <button id="themeToggle" class="btn btn-outline btn-small">
+            <i class="bi bi-moon-fill" id="themeIcon"></i>
+        </button>
         <a href="/login" class="btn btn-outline <%= activePage === 'login' ? 'active' : '' %>">Login</a>
         <a href="/register" class="btn btn-primary <%= activePage === 'register' ? 'active' : '' %>">Registreren</a>
     </div>

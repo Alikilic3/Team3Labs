@@ -10,14 +10,12 @@
 
         <div class="guess-container">
 
-            <!-- Stats -->
             <div class="stats">
                 <div class="stat-box"><i class="bi bi-star-fill"></i> XP: <span id="xp">0</span></div>
                 <div class="stat-box"><i class="bi bi-controller"></i> Ronde: <span id="round">0</span>/5</div>
                 <div class="stat-box"><i class="bi bi-heart-fill"></i> Pogingen: <span id="attempts-display">○○○○○</span></div>
             </div>
 
-            <!-- Control knoppen -->
             <div class="guess-controls">
                 <button id="startBtn" class="btn btn-primary">
                     <i class="bi bi-play-fill"></i> Start
@@ -27,7 +25,6 @@
                 </button>
             </div>
 
-            <!-- Afbeelding -->
             <div class="guess-image-container" id="imageContainer">
                 <div class="guess-placeholder" id="placeholder">
                     <i class="bi bi-controller"></i>
@@ -42,7 +39,6 @@
                 <div class="hint-box" id="hintBox" style="display:none;"></div>
             </div>
 
-            <!-- Input -->
             <div class="guess-input-container" id="inputContainer" style="display:none;">
                 <input type="text" id="guessInput" class="search-input" placeholder="Typ de naam van de game..." autocomplete="off">
                 <button id="checkBtn" class="btn btn-primary">
@@ -50,12 +46,9 @@
                 </button>
             </div>
 
-            <!-- Feedback -->
             <p id="feedback" class="guess-feedback"></p>
 
         </div>
-
-        <!-- Scorebord -->
         <div class="scoreboard" id="scoreboard" style="display:none;">
             <h2><i class="bi bi-trophy-fill"></i> Top 10 Scorebord</h2>
             <ol id="scoreboardList"></ol>
@@ -70,5 +63,6 @@
 <script>
     const SESSION_USER_ID = "<%= userId %>";
 </script>
+<script src="/js/main.js"></script>
 <script src="/js/script.js"></script>
 <%- include('partials/footer') %>

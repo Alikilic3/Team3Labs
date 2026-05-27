@@ -1,16 +1,14 @@
 const gamesGrid = document.getElementById("gamesGrid");
 const sortSelect = document.getElementById("sort");
 
-// ===========================
 // Gebruiker ophalen
-// ===========================
+
 function getUserId() {
     return SESSION_USER_ID || "";
 }
 
-// ===========================
 // Platform icoontjes
-// ===========================
+
 function getPlatformIcons(parentPlatforms) {
     if (!parentPlatforms || parentPlatforms.length === 0) return "";
     let iconsHTML = "";
@@ -25,9 +23,7 @@ function getPlatformIcons(parentPlatforms) {
     return iconsHTML;
 }
 
-// ===========================
 // Collectie ophalen
-// ===========================
 async function loadCollection() {
     const userId = getUserId();
     if (!userId) return;
@@ -47,9 +43,6 @@ async function loadCollection() {
     }
 }
 
-// ===========================
-// Collectie renderen
-// ===========================
 function renderCollection(collection) {
     gamesGrid.innerHTML = "";
 
@@ -115,7 +108,6 @@ function renderCollection(collection) {
         gamesGrid.innerHTML += cardHtml;
     });
 
-    // Status dropdowns
     document.querySelectorAll(".status-select").forEach(select => {
         select.addEventListener("change", async (e) => {
             const gameId = e.target.getAttribute("data-game-id");
@@ -132,7 +124,6 @@ function renderCollection(collection) {
         });
     });
 
-    // Verwijder knoppen
     document.querySelectorAll(".remove-btn").forEach(btn => {
         btn.addEventListener("click", async () => {
             const gameId = btn.getAttribute("data-game-id");
@@ -141,8 +132,6 @@ function renderCollection(collection) {
             loadCollection();
         });
     });
-
-    // Huidige game knoppen
     document.querySelectorAll(".set-current-btn").forEach(btn => {
         btn.addEventListener("click", async () => {
             const index = Number(btn.getAttribute("data-index"));
@@ -158,12 +147,5 @@ function renderCollection(collection) {
     });
 }
 
-// ===========================
-// Sort
-// ===========================
 sortSelect.addEventListener("change", loadCollection);
-
-// ===========================
-// Start
-// ===========================
 loadCollection();

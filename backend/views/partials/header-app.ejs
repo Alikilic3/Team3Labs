@@ -32,6 +32,9 @@
 
         <div class="user-menu">
             <span class="user-avatar" title="<%= user.name %>"><%= user.name.charAt(0).toUpperCase() %></span>
+            <button id="themeToggle" class="btn btn-outline btn-small">
+                <i class="bi bi-moon-fill" id="themeIcon"></i>
+            </button>
             <form action="/logout" method="POST" style="display:inline">
                 <button type="submit" class="btn btn-outline btn-small">Uitloggen</button>
             </form>

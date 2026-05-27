@@ -1,6 +1,4 @@
-// ===========================
 // DOM elementen
-// ===========================
 const blurredImage = document.getElementById("blurredImage");
 const placeholder = document.getElementById("placeholder");
 const guessInput = document.getElementById("guessInput");
@@ -18,9 +16,7 @@ const playAgainBtn = document.getElementById("playAgainBtn");
 const hintBtn = document.getElementById("hintBtn");
 const hintBox = document.getElementById("hintBox");
 
-// ===========================
 // Variabelen
-// ===========================
 const totalRounds = 5;
 const maxAttempts = 5;
 const blurLevels = [10, 8, 6, 3, 0];
@@ -34,9 +30,7 @@ let gameStarted = false;
 let currentGame = null;
 let hintUsed = false;
 
-// ===========================
 // Hulpfuncties
-// ===========================
 function getUserId() {
     return SESSION_USER_ID || "";
 }
@@ -49,18 +43,15 @@ function updateAttemptsDisplay() {
     attemptsDisplay.textContent = display;
 }
 
-// ===========================
+
 // Random game ophalen via backend
-// ===========================
 async function fetchRandomGame() {
     const response = await fetch("/api/random-game");
     if (!response.ok) throw new Error("Fout bij ophalen game");
     return await response.json();
 }
 
-// ===========================
 // Start ronde
-// ===========================
 async function startRound() {
     if (currentRound >= totalRounds) {
         await endGame();
@@ -100,9 +91,7 @@ async function startRound() {
     }
 }
 
-// ===========================
 // Antwoord controleren
-// ===========================
 async function checkAnswer() {
     const answer = guessInput.value.trim().toLowerCase();
     if (!answer || answer.length < 3) {
@@ -159,9 +148,7 @@ async function checkAnswer() {
     }
 }
 
-// ===========================
 // Einde van het spel
-// ===========================
 async function endGame() {
     inputContainer.style.display = "none";
     blurredImage.style.display = "none";
@@ -169,7 +156,6 @@ async function endGame() {
     if (hintBtn) hintBtn.style.display = "none";
     if (hintBox) hintBox.style.display = "none";
 
-    // XP opslaan in MongoDB
     try {
         await fetch("/api/xp", {
             method: "POST",
@@ -180,7 +166,6 @@ async function endGame() {
         console.error("Fout bij opslaan XP:", e);
     }
 
-    // Scorebord laden
     try {
         const response = await fetch("/api/scoreboard");
         const scores = await response.json();
@@ -206,9 +191,7 @@ async function endGame() {
     resetBtn.disabled = false;
 }
 
-// ===========================
 // Reset
-// ===========================
 function resetGame() {
     currentRound = 0;
     totalXp = 0;
@@ -240,9 +223,7 @@ function resetGame() {
     resetBtn.disabled = true;
 }
 
-// ===========================
 // Hint
-// ===========================
 hintBtn.addEventListener("click", () => {
     if (!currentGame || hintUsed) return;
     hintUsed = true;
@@ -268,9 +249,7 @@ hintBtn.addEventListener("click", () => {
     feedback.className = "guess-feedback wrong";
 });
 
-// ===========================
 // Event listeners
-// ===========================
 startBtn.addEventListener("click", () => {
     if (!gameStarted) {
         gameStarted = true;
