@@ -1,5 +1,5 @@
 import express from "express";
-import { connect, getUserByEmail, createUser, login, getFavoritesByUserId, addFavorite, removeFavorite, isFavorite, setCurrentGame, getCollection, addToCollection, removeFromCollection, updateCollectionStatus } from "./database";
+import { connect, getUserByEmail, createUser, login, getFavoritesByUserId, addFavorite, removeFavorite, isFavorite, setCurrentGame, getCollection, addToCollection, removeFromCollection, updateCollectionStatus, updateXP, getScoreboard } from "./database";
 import dotenv from "dotenv";
 import path from "path";
 import sessionMiddleware from "./session";
@@ -46,8 +46,6 @@ app.get("/register", (req, res) => {
 });
 
 app.get("/search", secureMiddleware, (req, res) => {
-    console.log("currentGame:", req.session.user!.currentGame);
-    console.log("currentGameId:", req.session.user!.currentGame?.id);
     res.render("search", { 
         activePage: "search",
         userId: req.session.user!._id!.toString(),
@@ -66,7 +64,10 @@ app.get("/compare", secureMiddleware, (req, res) => {
 });
 
 app.get("/guess", secureMiddleware, (req, res) => {
-    res.render("guess", { activePage: "guess" });
+    res.render("guess", { 
+        activePage: "guess",
+        userId: req.session.user!._id!.toString()
+    });
 });
 
 // ===========================
@@ -152,7 +153,8 @@ app.delete("/api/favorites/:userId/:gameId", async (req, res) => {
 app.get("/api/search", async (req, res) => {
     try {
         const query = req.query.q as string;
-        const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&search=${encodeURIComponent(query)}&page_size=20`);
+        const page = req.query.page || 1;
+        const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&search=${encodeURIComponent(query)}&page_size=20&page=${page}`);
         const data = await response.json();
         res.json(data);
     } catch (e) {
@@ -318,6 +320,51 @@ app.put("/api/collection/:userId/:gameId/status", secureMiddleware, async (req, 
         const { status } = req.body;
         await updateCollectionStatus(req.params.userId as string, Number(req.params.gameId), status);
         res.json({ message: "Status bijgewerkt!" });
+    } catch (e) {
+        res.status(500).json({ error: "Serverfout" });
+    }
+});
+
+
+// ===========================
+// API: Random game voor Guess
+// ===========================
+app.get("/api/random-game", async (req, res) => {
+    try {
+        const page = Math.floor(Math.random() * 20) + 1;
+        const response = await fetch(`${RAWG_BASE_URL}/games?key=${RAWG_KEY}&page=${page}&page_size=20&ordering=-rating`);
+        if (!response.ok) throw new Error(`RAWG fout: ${response.status}`);
+        const data = await response.json();
+        const games = data.results.filter((g: any) => g.background_image);
+        const randomGame = games[Math.floor(Math.random() * games.length)];
+        res.json(randomGame);
+    } catch (e) {
+        res.status(500).json({ error: "Fout bij ophalen game" });
+    }
+});
+
+// ===========================
+// API: XP updaten
+// ===========================
+app.post("/api/xp", secureMiddleware, async (req, res) => {
+    try {
+        const { xp } = req.body;
+        const userId = req.session.user!._id!.toString();
+        await updateXP(userId, xp);
+        req.session.user!.xp = (req.session.user!.xp || 0) + xp;
+        res.json({ message: "XP bijgewerkt!", totalXp: req.session.user!.xp });
+    } catch (e) {
+        res.status(500).json({ error: "Serverfout" });
+    }
+});
+
+// ===========================
+// API: Scorebord
+// ===========================
+app.get("/api/scoreboard", async (req, res) => {
+    try {
+        const scores = await getScoreboard();
+        res.json(scores);
     } catch (e) {
         res.status(500).json({ error: "Serverfout" });
     }

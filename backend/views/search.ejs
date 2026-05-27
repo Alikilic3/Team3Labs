@@ -93,37 +93,50 @@
 
         <!-- Zoekbalk + Filters -->
         <div class="search-toolbar">
-            <div class="search-bar">
-                <input type="text" id="searchInput" class="search-input" placeholder="Zoek een game via de RAWG database..." autocomplete="off">
-                <button id="searchBtn" class="btn btn-primary search-btn">
-                    <i class="bi bi-search"></i> Zoeken
-                </button>
-            </div>
-            <div class="search-filters">
-                <select id="filterPlatform" class="filter-select">
-                    <option value="">Alle platforms</option>
-                    <option value="pc">PC</option>
-                    <option value="playstation">PlayStation</option>
-                    <option value="xbox">Xbox</option>
-                    <option value="nintendo">Nintendo</option>
-                </select>
-                <select id="filterRating" class="filter-select">
-                    <option value="">Alle ratings</option>
-                    <option value="4">4+ ⭐</option>
-                    <option value="3">3+ ⭐</option>
-                    <option value="2">2+ ⭐</option>
-                </select>
-                <select id="filterSort" class="filter-select">
-                    <option value="-rating">Beste rating</option>
-                    <option value="-released">Nieuwste</option>
-                    <option value="-playtime">Meest gespeeld</option>
-                </select>
-            </div>
+    <div class="search-bar">
+        <div class="autocomplete-wrapper">
+            <input type="text" id="searchInput" class="search-input" placeholder="Zoek een game via de RAWG database..." autocomplete="off">
+            <ul class="autocomplete-dropdown" id="autocompleteDropdown"></ul>
         </div>
+        <button id="searchBtn" class="btn btn-primary search-btn">
+            <i class="bi bi-search"></i> Zoeken
+        </button>
+    </div>
+    <div class="search-filters">
+        <select id="filterPlatform" class="filter-select">
+            <option value="">Alle platforms</option>
+            <option value="pc">PC</option>
+            <option value="playstation">PlayStation</option>
+            <option value="xbox">Xbox</option>
+            <option value="nintendo">Nintendo</option>
+        </select>
+        <select id="filterRating" class="filter-select">
+            <option value="">Alle ratings</option>
+            <option value="4">4+ ⭐</option>
+            <option value="3">3+ ⭐</option>
+            <option value="2">2+ ⭐</option>
+        </select>
+        <select id="filterSort" class="filter-select">
+            <option value="-rating">Beste rating</option>
+            <option value="-released">Nieuwste</option>
+            <option value="-playtime">Meest gespeeld</option>
+        </select>
+    </div>
+</div>
 
         <!-- Titel + Grid -->
         <h1 class="page-title" id="pageTitle">Mijn Favorieten</h1>
         <div class="games-grid" id="gamesGrid"></div>
+        <!-- Paginatie -->
+<div class="pagination" id="pagination" style="display:none;">
+    <button class="pagination-btn" id="prevBtn" disabled>
+        <i class="bi bi-chevron-left"></i> Vorige
+    </button>
+    <span class="pagination-info" id="paginationInfo">Pagina 1</span>
+    <button class="pagination-btn" id="nextBtn">
+        Volgende <i class="bi bi-chevron-right"></i>
+    </button>
+</div>
 
     </main>
 

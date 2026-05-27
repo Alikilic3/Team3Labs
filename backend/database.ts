@@ -20,6 +20,21 @@ export const collectionCollection: Collection<CollectionEntry> = client.db("game
 export async function getUserById(userId: string) {
     return await usersCollection.findOne({ _id: new ObjectId(userId) });
 }
+
+export async function updateXP(userId: string, xpToAdd: number) {
+    return await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $inc: { xp: xpToAdd } }
+    );
+}
+
+export async function getScoreboard() {
+    return await usersCollection
+        .find({}, { projection: { name: 1, xp: 1 } })
+        .sort({ xp: -1 })
+        .limit(10)
+        .toArray();
+}
 // ===========================
 // Afsluiten
 // ===========================

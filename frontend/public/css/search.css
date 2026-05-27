@@ -1,8 +1,7 @@
 /* ===== LAYOUT ===== */
 .search-page-layout {
     display: flex;
-    height: calc(100vh - 70px);
-    overflow: hidden;
+    min-height: calc(100vh - 70px);
 }
 
 /* ===== SIDEBAR ===== */
@@ -85,6 +84,7 @@
     flex: 1;
     padding: 2rem;
     overflow-y: auto;
+    height: calc(100vh - 70px);
 }
 
 /* ===== ZOEKBALK + FILTERS ===== */
@@ -418,3 +418,96 @@
     transform: translateY(-2px);
 }
 
+.autocomplete-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.autocomplete-wrapper .search-input {
+    width: 100%;
+}
+
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #1c1c1f;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 4px 0 0;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+}
+
+.autocomplete-dropdown.active {
+    display: block;
+}
+
+.autocomplete-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    color: white;
+    font-size: 0.9rem;
+    transition: background 0.15s ease;
+}
+
+.autocomplete-dropdown li:hover {
+    background: rgba(168, 85, 247, 0.2);
+}
+
+.autocomplete-dropdown li img {
+    width: 40px;
+    height: 28px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.autocomplete-dropdown li span {
+    flex: 1;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: #1c1c1f;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: #a855f7;
+    border-color: #a855f7;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    color: #888;
+    font-size: 0.9rem;
+}

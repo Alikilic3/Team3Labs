@@ -10,12 +10,20 @@ const sidebarBtns = document.querySelectorAll(".sidebar-sub-btn");
 const filterPlatform = document.getElementById("filterPlatform");
 const filterRating = document.getElementById("filterRating");
 const filterSort = document.getElementById("filterSort");
+const autocompleteDropdown = document.getElementById("autocompleteDropdown");
+const pagination = document.getElementById("pagination");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const paginationInfo = document.getElementById("paginationInfo");
 
 let currentGames = [];
 let searchTimeout;
 let cachedFavorites = [];
 let cachedCollection = [];
 let activeCurrentGameId = SESSION_CURRENT_GAME_ID;
+let currentPage = 1;
+let totalPages = 1;
+let lastSearchQuery = "";
 
 // ===========================
 // Gebruiker ophalen
@@ -232,6 +240,7 @@ async function renderFavorites() {
     await loadFavorites();
     await loadCollectionCache();
     await renderGames(cachedFavorites);
+    pagination.style.display = "none";
     if (cachedFavorites.length === 0) {
         gamesGrid.innerHTML = "<p>Je hebt nog geen favoriete games.</p>";
     }
@@ -240,23 +249,42 @@ async function renderFavorites() {
 // ===========================
 // Games zoeken
 // ===========================
-async function searchGames() {
+async function searchGames(page = 1) {
     const query = searchInput.value.trim();
     if (query === "") {
         renderFavorites();
+        pagination.style.display = "none";
         return;
     }
     try {
+        lastSearchQuery = query;
+        currentPage = page;
         pageTitle.textContent = `Zoekresultaten voor "${query}"`;
-        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}&page=${page}`);
         if (!response.ok) throw new Error(response.statusText);
         const data = await response.json();
+
+        const count = data.count || 0;
+        totalPages = Math.ceil(count / 20);
+
         await renderGames(data.results);
+        document.querySelector(".search-main").scrollTo({ top: 0, behavior: "smooth" });
+        updatePagination(); // ← geen pagination.style.display = "none" meer hierboven!
     } catch (error) {
         gamesGrid.innerHTML = "<p>Er ging iets fout bij het ophalen van games.</p>";
     }
 }
 
+function updatePagination() {
+    if (totalPages <= 1) {
+        pagination.style.display = "none";
+        return;
+    }
+    pagination.style.display = "flex";
+    paginationInfo.textContent = `Pagina ${currentPage} van ${totalPages}`;
+    prevBtn.disabled = currentPage <= 1;
+    nextBtn.disabled = currentPage >= totalPages;
+}
 // ===========================
 // Game modal
 // ===========================
@@ -414,17 +442,36 @@ sidebarBtns.forEach(btn => {
     filter.addEventListener("change", () => renderGames(currentGames));
 });
 
+prevBtn.addEventListener("click", () => {
+    if (currentPage > 1) searchGames(currentPage - 1);
+});
+
+nextBtn.addEventListener("click", () => {
+    if (currentPage < totalPages) searchGames(currentPage + 1);
+});
 searchBtn.addEventListener("click", searchGames);
 
 searchInput.addEventListener("input", () => {
     clearTimeout(searchTimeout);
+    const query = searchInput.value.trim();
+
+    if (query === "") {
+        autocompleteDropdown.classList.remove("active");
+        renderFavorites();
+        return;
+    }
+
     searchTimeout = window.setTimeout(() => {
-        if (searchInput.value.trim() === "") {
-            renderFavorites();
-        } else {
-            searchGames();
-        }
+        showAutocomplete(query);
+        searchGames();
     }, 400);
+});
+
+// Sluit dropdown als je erbuiten klikt
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".autocomplete-wrapper")) {
+        autocompleteDropdown.classList.remove("active");
+    }
 });
 
 closeModal.addEventListener("click", () => {
@@ -436,6 +483,62 @@ gameModal.addEventListener("click", (event) => {
         gameModal.classList.add("hidden");
     }
 });
+
+
+
+// ===========================
+// Autocomplete
+// ===========================
+async function showAutocomplete(query) {
+    if (query.length < 2) {
+        autocompleteDropdown.classList.remove("active");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        const results = data.results?.filter(g => g.background_image).slice(0, 6) || [];
+
+        if (results.length === 0) {
+            autocompleteDropdown.classList.remove("active");
+            return;
+        }
+
+        autocompleteDropdown.innerHTML = results.map(game => `
+            <li data-id="${game.id}" data-name="${game.name.replace(/"/g, '&quot;')}">
+                <img src="${game.background_image}" alt="${game.name}">
+                <span>${game.name}</span>
+            </li>
+        `).join("");
+
+        autocompleteDropdown.classList.add("active");
+
+       autocompleteDropdown.querySelectorAll("li").forEach(li => {
+    li.addEventListener("click", async () => {
+        const gameId = Number(li.getAttribute("data-id"));
+        const gameName = li.getAttribute("data-name");
+        searchInput.value = gameName;
+        autocompleteDropdown.classList.remove("active");
+        
+        // Haal de specifieke game op via ID
+        pageTitle.textContent = `Zoekresultaten voor "${gameName}"`;
+        gamesGrid.innerHTML = "<p>Laden...</p>";
+        
+        try {
+            const response = await fetch(`/api/games/${gameId}`);
+            const game = await response.json();
+            await renderGames([game]);
+        } catch (e) {
+            gamesGrid.innerHTML = "<p>Er ging iets fout.</p>";
+        }
+    });
+});
+
+    } catch (e) {
+        autocompleteDropdown.classList.remove("active");
+    }
+}
 
 // ===========================
 // Start
@@ -455,8 +558,5 @@ async function loadDefaultGames() {
         gamesGrid.innerHTML = "<p>Er ging iets fout.</p>";
     }
 }
-
 loadDefaultGames();
 
-console.log("SESSION_CURRENT_GAME_ID:", SESSION_CURRENT_GAME_ID);
-console.log("Type:", typeof SESSION_CURRENT_GAME_ID);
